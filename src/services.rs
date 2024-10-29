@@ -32,11 +32,9 @@ struct Compra {
 
 #[get("/vehiculos")]
 pub async fn fetch_vehicles(state: Data<AppState>) -> impl Responder {
-    match sqlx::query_as::<_, Vehiculo>(
-        "SELECT nro_chasis, matricula, modelo, marca, color, anio FROM vehiculos",
-    )
-    .fetch_all(&state.db)
-    .await
+    match sqlx::query_as::<_, Vehiculo>("SELECT  FROM vehiculo;")
+        .fetch_all(&state.db)
+        .await
     {
         Ok(vehiculos) => HttpResponse::Ok().json(vehiculos),
         Err(_) => HttpResponse::NotFound().json("No vehicles found"),

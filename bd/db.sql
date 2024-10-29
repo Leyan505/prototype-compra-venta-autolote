@@ -72,6 +72,6 @@ CREATE TABLE Promesa_Venta (
     FOREIGN KEY (matricula) REFERENCES Vehiculo (matricula)
 );
 
-CREATE TYPE state AS ENUM('DISPONIBLE', 'ENPROCESO', 'VENDIDO');
+CREATE TYPE state AS ENUM('DISPONIBLE', 'ENPROCESO', 'VENDIDO', 'RESERVADO');
 
 ALTER TABLE vehiculo ADD COLUMN estado state;
