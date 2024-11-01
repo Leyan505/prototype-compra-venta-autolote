@@ -23,7 +23,7 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Error building a connection pool");
 
-    let query = sqlx::query_file!("bd/seed.sql").execute(&pool).await?;
+    let query = sqlx::query_file!("bd/seed.sql").execute(&pool).await;
 
     HttpServer::new(move || {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();

@@ -1,0 +1,22 @@
+{% block titulo %} AUTOLOTE {% endblock %}
+
+{% block main %}
+  <table>
+    <thead>
+      
+    </thead>
+      <tbody>
+        {% for vehiculo in vehiculos %}
+          <tr>
+            <td>
+              {{vehiculo.matricula}}
+            </td>
+            <td>
+              {{vehiculo.anio}}
+            </td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+

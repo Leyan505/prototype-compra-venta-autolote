@@ -1,13 +1,8 @@
-use std::string;
-
 use crate::AppState;
-use actix_web::{
-    get,
-    http::header::FROM,
-    post,
-    web::{Data, Json, Path},
-    HttpResponse, Responder,
-};
+use std::string;
+use tera::{Context, Tera};
+
+use actix_web::{get, http::header::FROM, post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use sqlx::{self, types::chrono, FromRow};
 
@@ -15,7 +10,7 @@ use sqlx::{self, types::chrono, FromRow};
 struct Vehiculo {
     nro_chasis: String,
     matricula: String,
-    model: String,
+    modelo: String,
     marca: String,
     color: String,
     anio: i32,
@@ -31,12 +26,17 @@ struct Compra {
 }
 
 #[get("/vehiculos")]
-pub async fn fetch_vehicles(state: Data<AppState>) -> impl Responder {
-    match sqlx::query_as::<_, Vehiculo>("SELECT  FROM vehiculo;")
+pub async fn fetch_vehicles(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+    let mut Context = Context::new();
+
+    match sqlx::query_as::<_, Vehiculo>("SELECT * FROM vehiculo")
         .fetch_all(&state.db)
         .await
     {
-        Ok(vehiculos) => HttpResponse::Ok().json(vehiculos),
+        Ok(vehiculos) => {
+            Context.insert("vehiculos", &vehiculos);
+            HttpResponse::Ok().body(tera.render("index.html", &Context).unwrap())
+        }
         Err(_) => HttpResponse::NotFound().json("No vehicles found"),
     }
 }
