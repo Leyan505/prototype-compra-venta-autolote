@@ -1,19 +1,33 @@
+{% extends "base.html" %}
 {% block titulo %} AUTOLOTE {% endblock %}
 
 {% block main %}
-  <table>
-    <thead>
-      
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Matricula</th>
+        <th scope="col">Nro. chasis</th>
+        <th scope="col">Marca</th>
+        <th scope="col">Modelo</th>
+        <th scope="col">Color</th>
+        <th scope="col">Año</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Fecha compra</th>
+        <th scope="col">Precio compra</th>
+      </tr>
     </thead>
       <tbody>
         {% for vehiculo in vehiculos %}
           <tr>
-            <td>
-              {{vehiculo.matricula}}
-            </td>
-            <td>
-              {{vehiculo.anio}}
-            </td>
+            <td>{{vehiculo.matricula}}</td>
+            <td>{{vehiculo.nro_chasis}}</td>
+            <td>{{vehiculo.marca}}</td>
+            <td>{{vehiculo.modelo}}</td>
+            <td>{{vehiculo.color}}</td>
+            <td>{{vehiculo.anio}}</td>
+            <td>{{vehiculo.fecha_compra}}</td>
+            <td>{{vehiculo.fecha_compra}}</td>
+            <td>{{vehiculo.precio_compra}}</td>
           </tr>
         {% endfor %}
     </tbody>

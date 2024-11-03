@@ -4,7 +4,20 @@ use tera::{Context, Tera};
 
 use actix_web::{get, http::header::FROM, post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
-use sqlx::{self, types::chrono, FromRow};
+use sqlx::{
+    self,
+    types::{chrono, BigDecimal},
+    FromRow,
+};
+
+#[derive(Serialize, Deserialize, sqlx::Type)]
+#[sqlx(type_name = "state")]
+pub enum state {
+    DISPONIBLE,
+    ENPROCESO,
+    VENDIDO,
+    RESERVADO,
+}
 
 #[derive(Serialize, FromRow)]
 struct Vehiculo {
@@ -12,24 +25,19 @@ struct Vehiculo {
     matricula: String,
     modelo: String,
     marca: String,
-    color: String,
+    color: Option<String>,
     anio: i32,
-}
-
-#[derive(Serialize, FromRow)]
-struct Compra {
-    id_compra: i32,
-    fecha_compra: chrono::DateTime<chrono::Utc>,
-    precio_compra: f64,
-    gastos_viaje: f64,
-    nro_chasis: String,
+    fecha_compra: chrono::NaiveDate,
+    precio_compra: BigDecimal,
+    estado: state,
 }
 
 #[get("/vehiculos")]
 pub async fn fetch_vehicles(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
     let mut Context = Context::new();
 
-    match sqlx::query_as::<_, Vehiculo>("SELECT * FROM vehiculo")
+    match sqlx::query_as!(Vehiculo,
+        r#"SELECT nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado AS "estado!: state" FROM vehiculo"#)
         .fetch_all(&state.db)
         .await
     {
