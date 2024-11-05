@@ -1,4 +1,5 @@
 use crate::AppState;
+use actix_files::Files;
 use std::string;
 use tera::{Context, Tera};
 

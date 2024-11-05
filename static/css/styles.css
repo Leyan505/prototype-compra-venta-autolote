@@ -3,7 +3,7 @@
 }
 
 body{
- background-color: red; 
+ background-color: #F4F2F2; 
 }
 
 .sidebar{
@@ -16,4 +16,15 @@ body{
   background-color: #1F2544;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+.opcion-navbar{
+  display: block;
+  color: white;
+  text-decoration: none;
+}
+
+.logo-navbar h3{
+  color: white;
+  font-weight: bold;
 }

@@ -1,3 +1,4 @@
+use actix_files::Files;
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use dotenv::dotenv;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
@@ -31,6 +32,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(AppState { db: pool.clone() }))
             .app_data(Data::new(tera))
             //.service(create_buy_vehicle)
+            .service(Files::new("/static", "./static").show_files_listing()) // Static file handler
             .service(fetch_vehicles)
         //.service(fetch_buys)
     })
