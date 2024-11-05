@@ -1,3 +1,19 @@
 *{
   box-sizing: border-box;
 }
+
+body{
+ background-color: red; 
+}
+
+.sidebar{
+  width: 335px;
+  height:100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #1F2544;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
