@@ -1,10 +1,14 @@
 use actix_files::Files;
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use dotenv::dotenv;
+use sellers::{obtain_sellers, post_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use statics::read_static;
 use tera::{Context, Tera};
 
+mod sellers;
 mod services;
+mod statics;
 use services::fetch_vehicles;
 
 pub struct AppState {
@@ -24,7 +28,7 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Error building a connection pool");
 
-    let query = sqlx::query_file!("bd/seed.sql").execute(&pool).await;
+    let _query = sqlx::query_file!("bd/seed.sql").execute(&pool).await;
 
     HttpServer::new(move || {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
@@ -32,8 +36,10 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(AppState { db: pool.clone() }))
             .app_data(Data::new(tera))
             //.service(create_buy_vehicle)
-            .service(Files::new("/static", "./static").show_files_listing()) // Static file handler
+            .service(read_static) // Static file handler
             .service(fetch_vehicles)
+            .service(post_sellers)
+            .service(obtain_sellers)
         //.service(fetch_buys)
     })
     .bind(("127.0.0.1", 8080))?
