@@ -1,4 +1,3 @@
-use actix_files::Files;
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use dotenv::dotenv;
 use sellers::{obtain_sellers, post_sellers};
