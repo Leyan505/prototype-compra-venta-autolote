@@ -1,14 +1,22 @@
+:root{
+  --primary: white;
+  --secundary: #1F2544;
+  --accent: #81689D;
+}
+
 *{
   box-sizing: border-box;
 }
 
 body{
  background-color: #F4F2F2; 
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .sidebar{
-  width: 335px;
   height:100%;
+  width: 335px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -16,15 +24,143 @@ body{
   background-color: #1F2544;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: hidden;
+  text-align: center;
 }
 
 .opcion-navbar{
-  display: block;
   color: white;
   text-decoration: none;
+  margin-left: 20px;
+  font-size: 25px;
+}
+.logo-navbar{
+  padding-top: 50px;
 }
 
 .logo-navbar h3{
   color: white;
   font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.logo-navbar img{
+  height: 118px;
+  width: 195px;
+}
+.opciones-navbar{
+  margin-top: 20px;
+}
+.opciones-navbar i{
+  color:white;
+  display:inline;
+  position: fixed;
+  left: 65px;
+  font-size: 25px;
+}
+
+.cuadro-opcion{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 69px;
+  width: 335px;
+}
+
+.cuadro-opcion:hover{
+  background-color: #81689D;
+}
+
+.main{
+  margin-left: 335px;
+  padding: 50px;
+  width: calc(100vw - 335px);
+  height: 100%;
+  background-color: #F4F2F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-table{
+  background-color: white;
+  padding: 50px;
+  width: 95%;
+  height: 650px;
+  overflow-y: hidden;
+  border-radius: 20px;
+}
+
+/*.table-wrapper{
+  height: 500px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}*/
+
+#vehiculos-table{
+  display: block;
+  overflow-y: auto;
+  height: 400px;
+}
+.table-wrapper{
+  width: 100% !important;
+  height: 100px;
+}
+
+#vehiculos-table th{
+  background-color: rgba(129, 104, 157, 0.88);
+  color: white;
+}
+
+#vehiculos-table, td, th{
+  border: 1px solid #B9B9B9;
+  border-collapse: collapse;
+}
+
+#nuevo-vehiculos, #exportar-vehiculos{
+  padding: 5px 15px;
+}
+
+button i{
+  margin-right: 4px;
+}
+
+button#nuevo-vehiculos{
+  color: white;
+  background-color: rgba(129, 104, 157, 0.88);
+  border: none;
+}
+
+button#exportar-vehiculos{
+  color:white;
+  background-color: #474F7A;
+  border: none;
+}
+
+button#nuevo-vehiculos:hover{
+  background-color: rgba(129, 104, 157, 0.50);
+}
+button#exportar-vehiculos:hover{
+  background-color: rgba(71, 79, 122, 0.70);
+}
+
+.accion-botones i{
+  margin-right: 0px;
+}
+
+.accion-botones .btn{
+  height: 40px;
+  border-radius: 0;
+}
+#vehiculos-table tr:first-child(){
+  margin: auto;
+}
+
+div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover{
+  background-color: var(--accent) !important;
+  color: white !important;
+}
+
+div.dt-container .dt-paging .dt-paging-button:hover{
+  background-color: var(--secundary) !important;
 }
