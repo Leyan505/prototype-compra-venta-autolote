@@ -1,8 +1,5 @@
 use crate::AppState;
-use actix_files::Files;
-use std::string;
 use tera::{Context, Tera};
-
 use actix_web::{get, http::header::FROM, post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use sqlx::{
@@ -35,7 +32,7 @@ struct Vehiculo {
 
 #[get("/vehiculos")]
 pub async fn fetch_vehicles(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
-    let mut Context = Context::new();
+    let mut context = Context::new();
 
     match sqlx::query_as!(Vehiculo,
         r#"SELECT nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado AS "estado!: state" FROM vehiculo"#)
@@ -43,8 +40,8 @@ pub async fn fetch_vehicles(state: web::Data<AppState>, tera: web::Data<Tera>) -
         .await
     {
         Ok(vehiculos) => {
-            Context.insert("vehiculos", &vehiculos);
-            HttpResponse::Ok().body(tera.render("index.html", &Context).unwrap())
+            context.insert("vehiculos", &vehiculos);
+            HttpResponse::Ok().body(tera.render("index.html", &context).unwrap())
         }
         Err(_) => HttpResponse::NotFound().json("No vehicles found"),
     }

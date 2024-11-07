@@ -1,0 +1,43 @@
+{% extends "base.html" %} 
+
+{% block titulo %} AUTOLOTE {% endblock %}
+
+{% block main %}
+  <h1>Listado de Vendedores</h1>
+
+  <h2>Agregar Vendedor</h2>
+  <form action="/vendedores" method="POST">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required><br>
+
+    <label for="cedula">Cédula:</label>
+    <input type="text" id="cedula" name="cedula" placeholder="Cedula" required><br>
+
+    <button type="submit">Agregar</button>
+  </form>
+
+  <h2>Vendedores Registrados</h2>
+  <table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Cédula</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vendedor in vendedores %}
+        <tr>
+            <td>{{ vendedor.id_vendedor }}</td>
+            <td>{{ vendedor.nombre }}</td>
+            <td>{{ vendedor.apellido }}</td>
+            <td>{{ vendedor.cedula }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
