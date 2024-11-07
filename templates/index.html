@@ -2,9 +2,16 @@
 {% block titulo %} AUTOLOTE {% endblock %}
 
 {% block main %}
-  <table class="table">
-    <thead class="table-dark">
+<div>
+  <button id="nuevo-vehiculos"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
+  <button id="exportar-vehiculos"><i class="fa-solid fa-file-export"></i>Exportar</button>
+</div>
+
+<div class="table-wrapper">
+  <table id="vehiculos-table" class="table">
+    <thead>
       <tr>
+        <th scope="col">Acción</th>
         <th scope="col">Matricula</th>
         <th scope="col">Nro. chasis</th>
         <th scope="col">Marca</th>
@@ -19,6 +26,13 @@
       <tbody>
         {% for vehiculo in vehiculos %}
           <tr>
+            <td>
+              <div class="btn-group accion-botones" role="group">
+                <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+                <button type="button" class="btn btn-warning" ><i class="fa-solid fa-pencil"></i></button>
+                <button type="button" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+              </div>
+            </td>
             <td>{{vehiculo.matricula}}</td>
             <td>{{vehiculo.nro_chasis}}</td>
             <td>{{vehiculo.marca}}</td>
