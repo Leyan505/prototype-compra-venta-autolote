@@ -33,7 +33,10 @@ body{
   text-decoration: none;
   margin-left: 20px;
   font-size: 25px;
+  display: block;
+  width: 100%;
 }
+
 .logo-navbar{
   padding-top: 50px;
 }
@@ -97,7 +100,7 @@ body{
   overflow-x: hidden;
 }*/
 
-#vehiculos-table{
+#vehiculos-table, #vendedores-table{
   display: block;
   overflow-y: auto;
   height: 400px;
@@ -107,12 +110,12 @@ body{
   height: 100px;
 }
 
-#vehiculos-table th{
+#vehiculos-table th, #vendedores-table th{
   background-color: rgba(129, 104, 157, 0.88);
   color: white;
 }
 
-#vehiculos-table, td, th{
+#vehiculos-table, td, #vendedores-table th{
   border: 1px solid #B9B9B9;
   border-collapse: collapse;
 }
@@ -152,7 +155,7 @@ button#exportar-vehiculos:hover{
   height: 40px;
   border-radius: 0;
 }
-#vehiculos-table tr:first-child(){
+#vehiculos-table tr:first-child(), #vendedores-table tr:first-child(){
   margin: auto;
 }
 

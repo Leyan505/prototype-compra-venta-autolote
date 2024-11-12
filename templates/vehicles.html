@@ -2,31 +2,6 @@
 {% block titulo %} AUTOLOTE {% endblock %}
 
 {% block main %}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <div>
   <button id="nuevo-vehiculos"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
   <button id="exportar-vehiculos"><i class="fa-solid fa-file-export"></i>Exportar</button>
@@ -53,7 +28,7 @@
           <tr>
             <td>
               <div class="btn-group accion-botones" role="group">
-                <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+                <button data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.nro_chasis}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
                 <button type="button" class="btn btn-warning" ><i class="fa-solid fa-pencil"></i></button>
                 <button type="button" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
               </div>
@@ -71,5 +46,21 @@
         {% endfor %}
     </tbody>
   </table>
+
+
+<div class="modal fade" id="vehicleModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        ...
+      </div>
+      <div id="vehicleDetails" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
 

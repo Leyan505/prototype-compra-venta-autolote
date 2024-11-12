@@ -6,9 +6,9 @@ use statics::read_static;
 use tera::{Context, Tera};
 
 mod sellers;
-mod services;
 mod statics;
-use services::fetch_vehicles;
+mod vehicles;
+use vehicles::{fetch_vehicles, insert_vehicles};
 
 pub struct AppState {
     db: Pool<Postgres>,
@@ -39,6 +39,7 @@ async fn main() -> std::io::Result<()> {
             .service(fetch_vehicles)
             .service(post_sellers)
             .service(obtain_sellers)
+            .service(insert_vehicles)
         //.service(fetch_buys)
     })
     .bind(("127.0.0.1", 8080))?
