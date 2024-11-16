@@ -1,7 +1,7 @@
 use std::string;
 
 use crate::AppState;
-use actix_web::{error::InternalError, get, http::{header::FROM, StatusCode}, post, web::{self, Json}, HttpResponse, Responder, ResponseError};
+use actix_web::{error::InternalError, get, http::{header::FROM, StatusCode}, post, web::{self, Json, Redirect}, HttpResponse, Responder, ResponseError};
 use serde::{de::Error, Deserialize, Serialize};
 use sqlx::{
     self, error::DatabaseError, types::{chrono, BigDecimal}, FromRow
@@ -78,24 +78,24 @@ pub async fn insert_vehicles(state: web::Data<AppState>, new_vehicle: web::Form<
     }
 }
 
-#[post("/delete_vehicles")]
-pub async fn delete_vehicles(state: web::Data<AppState>, id: String) -> impl Responder{
+#[post("/delete_vehicles/{id}")]
+pub async fn delete_vehicles(state: web::Data<AppState>, path: web::Path<(String, )>) -> Result <actix_web::web::Redirect, InternalError<String>>{
+    let id = path.into_inner().0;
     match sqlx::query!(
     r#"
         DELETE FROM vehiculo
-        WHERE nro_chasis = $1
+        WHERE matricula = $1
     "#,
         id,
     )
     .execute(&state.db)
     .await
     {
-        Ok(_) => HttpResponse::SeeOther()
-            .append_header(("Location", "/vehiculos"))
-            .finish(),
-        Err(_) => {
-            HttpResponse::InternalServerError().body("Error al eliminar vehiculo")
-        }
+        Ok(_) => Ok(Redirect::to("/vehicles").see_other()),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )),
     }
 }
 
@@ -106,7 +106,7 @@ pub async fn get_vehicle(state: web::Data<AppState>, path: web::Path<(String, )>
     r#"
     SELECT nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado AS "estado!: state"
     FROM vehiculo
-    WHERE nro_chasis = $1
+    WHERE matricula = $1
     "#,
         id
     )

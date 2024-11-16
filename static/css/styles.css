@@ -167,3 +167,50 @@ div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-pagi
 div.dt-container .dt-paging .dt-paging-button:hover{
   background-color: var(--secundary) !important;
 }
+
+.table_component {
+  overflow: auto;
+  width: 100%;
+}
+
+.table_component table {
+  border: 0px solid #dededf;
+  height: 100%;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 1px;
+  text-align: left;
+}
+
+.table_component caption {
+  caption-side: top;
+  text-align: left;
+}
+
+.table_component th {
+  border: 0px solid #dededf;
+  background-color: #907aa9;
+  color: #eceff1;
+  padding: 5px;
+}
+
+.table_component td {
+  border: 0px solid #dededf;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 5px;
+}
+
+#vehicle-header{
+  font-weight: bold;
+}
+
+.close-btn{
+  background-color: var(--secundary);
+  color: white;
+}
+
+.close-btn:hover{
+  background-color: rgba(71, 79, 122, 0.70);
+}

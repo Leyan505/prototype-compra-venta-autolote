@@ -3,7 +3,7 @@
 
 {% block main %}
 <div>
-  <button id="nuevo-vehiculos"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
+  <button id="insert-vehicles"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
   <button id="exportar-vehiculos"><i class="fa-solid fa-file-export"></i>Exportar</button>
 </div>
 
@@ -28,9 +28,11 @@
           <tr>
             <td>
               <div class="btn-group accion-botones" role="group">
-                <button data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.nro_chasis}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
-                <button type="button" class="btn btn-warning" ><i class="fa-solid fa-pencil"></i></button>
-                <button type="button" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+                <button id="view-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+                <a class="btn btn-warning" ><i class="fa-solid fa-pencil"></i></a>
+                <form method="POST" action="/delete_vehicles/{{vehiculo.matricula}}">
+                  <button id="delete-vehicles" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+                </form>
               </div>
             </td>
             <td>{{vehiculo.matricula}}</td>
@@ -51,13 +53,12 @@
 <div class="modal fade" id="vehicleModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        ...
+      <div id="vehicle-header" class="modal-header">
       </div>
-      <div id="vehicleDetails" class="modal-body">
+      <div id="vehicle-details" class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
