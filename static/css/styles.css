@@ -100,7 +100,7 @@ body{
   overflow-x: hidden;
 }*/
 
-#vehiculos-table, #vendedores-table{
+#vehiculos-table, #vendedores-table, #ventas-table{
   display: block;
   overflow-y: auto;
   height: 400px;
@@ -110,17 +110,17 @@ body{
   height: 100px;
 }
 
-#vehiculos-table th, #vendedores-table th{
+#vehiculos-table th, #vendedores-table th, #ventas-table th{
   background-color: rgba(129, 104, 157, 0.88);
   color: white;
 }
 
-#vehiculos-table, td, #vendedores-table th{
+#vehiculos-table, td, #vendedores-table th, #ventas-table th{
   border: 1px solid #B9B9B9;
   border-collapse: collapse;
 }
 
-#nuevo-vehiculos, #exportar-vehiculos{
+#nuevo-vehiculos, #exportar-vehiculos, #nuevo-vendedor, #exportar-vendedores, #nueva-venta, #exportar-venta{
   padding: 5px 15px;
 }
 
@@ -144,6 +144,25 @@ button#nuevo-vehiculos:hover{
   background-color: rgba(129, 104, 157, 0.50);
 }
 button#exportar-vehiculos:hover{
+  background-color: rgba(71, 79, 122, 0.70);
+}
+
+button#nuevo-vendedor{
+  color: white;
+  background-color: rgba(129, 104, 157, 0.88);
+  border: none;
+}
+
+button#exportar-vendedores{
+  color:white;
+  background-color: #474F7A;
+  border: none;
+}
+
+button#nuevo-vendedor:hover{
+  background-color: rgba(129, 104, 157, 0.50);
+}
+button#exportar-vendedores:hover{
   background-color: rgba(71, 79, 122, 0.70);
 }
 
