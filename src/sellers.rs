@@ -14,7 +14,7 @@ pub struct Vendedor {
     pub cedula: String,
 }
 
-#[get("/vendedores")]
+#[get("/sellers")]
 pub async fn obtain_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
     let mut context = Context::new();
     match sqlx::query_as!(
@@ -38,7 +38,7 @@ pub async fn obtain_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -
 
 
 
-#[post("/vendedores")]
+#[post("/sellers")]
 pub async fn post_sellers(state: web::Data< AppState>, new_seller: web::Form<Vendedor>)  //manda los datos como un webform, no se como hacerlo en json
 -> impl Responder {
 
@@ -55,7 +55,7 @@ pub async fn post_sellers(state: web::Data< AppState>, new_seller: web::Form<Ven
     .await;
 match result {
     Ok(_) => HttpResponse::SeeOther()
-        .append_header(("Location", "/vendedores"))
+        .append_header(("Location", "/sellers"))
         .finish(),
     Err(err) => {
         HttpResponse::InternalServerError().body("Error al insertar el vendedor")
