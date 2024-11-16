@@ -3,65 +3,65 @@
 {% block titulo %} AUTOLOTE {% endblock %}
 
 {% block main %}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
+<div>
+  <button id="nuevo-vendedor"><i class="fa-solid fa-square-plus"></i> Nuevo</button>
+  <button id="exportar-vendedores"><i class="fa-solid fa-file-export"></i> Exportar</button>
+</div>
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="table-wrapper">
+  <table class="table" id="vendedores-table">
+    <thead class="table-dark">
+      <tr>
+        <th>Acción</th>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Cédula</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vendedor in vendedores %}
+        <tr>
+          <td>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vendedorModal" data-id="{{ vendedor.id_vendedor }}">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button type="button" class="btn btn-warning">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+              <button type="button" class="btn btn-danger">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </button>
+            </div>
+          </td>
+          <td>{{ vendedor.id_vendedor }}</td>
+          <td>{{ vendedor.nombre }}</td>
+          <td>{{ vendedor.apellido }}</td>
+          <td>{{ vendedor.cedula }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal
+
+<div class="modal fade" id="vendedorModal" tabindex="-1" aria-labelledby="vendedorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
         ...
+        /button>
+      </div>
+      <div id="vendedorDetails" class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
-  
-  <h1>Listado de Vendedores</h1>
+-->
 
-  <h2>Agregar Vendedor</h2>
-  <form action="/vendedores" method="POST">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required><br>
-
-    <label for="apellido">Apellido:</label>
-    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required><br>
-
-    <label for="cedula">Cédula:</label>
-    <input type="text" id="cedula" name="cedula" placeholder="Cedula" required><br>
-
-    <button type="submit">Agregar</button>
-  </form>
-
-  <h2>Vendedores Registrados</h2>
-  <table class="table" id="vendedores-table">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Cédula</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for vendedor in vendedores %}
-        <tr>
-            <td>{{ vendedor.id_vendedor }}</td>
-            <td>{{ vendedor.nombre }}</td>
-            <td>{{ vendedor.apellido }}</td>
-            <td>{{ vendedor.cedula }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-  </table>
 {% endblock %}

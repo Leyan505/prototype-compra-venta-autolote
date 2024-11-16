@@ -1,0 +1,36 @@
+{% extends "base.html" %} 
+
+{% block titulo %} AUTOLOTE {% endblock %}
+
+{% block main %}
+<div>
+    <button id="nueva-venta"><i class="fa-solid fa-square-plus">Nuevo</i></button>
+    <button id="exportar-venta"><i class="fa-solid fa-file-export">Exportar</i></button>
+</div class="table-wrapper">
+<div>
+  <table class="table" id="ventas-table">
+    <thead class="table-dark">
+        <tr>
+            <th>Id Venta</th>
+            <th>Matricula</th>
+            <th>Fecha Venta</th>
+            <th>Precio venta</th>
+            <th>Id Cliente</th>
+            <th>Id Vendedor</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for venta in ventas %}
+        <tr>
+            <td>{{ venta.id_venta }}</td>
+            <td>{{ venta.matricula }}</td>
+            <td>{{ venta.fecha_venta }}</td>
+            <td>{{ venta.precio_venta }}</td>
+            <td>{{ venta.id_cliente }}</td>
+            <td>{{ venta.id_vendedor }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
