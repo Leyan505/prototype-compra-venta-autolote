@@ -89,7 +89,7 @@ body{
 .card-table{
   background-color: white;
   padding: 50px;
-  width: 95%;
+  width: 100%;
   height: 650px;
   overflow-y: hidden;
   border-radius: 20px;
@@ -109,6 +109,11 @@ body{
 .table-wrapper{
   width: 100% !important;
   height: 100px;
+}
+#vehiculos-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 #vehiculos-table th, #vendedores-table th, #ventas-table th{
@@ -166,7 +171,9 @@ button#nuevo-vendedor:hover{
 button#exportar-vendedores:hover{
   background-color: rgba(71, 79, 122, 0.70);
 }
-
+.accion-botones{
+  z-index: 1;
+}
 .accion-botones i{
   margin-right: 0px;
 }
