@@ -10,7 +10,7 @@ mod sellers;
 mod sales;
 mod statics;
 mod vehicles;
-use vehicles::{delete_vehicles, fetch_vehicles, get_vehicle, insert_vehicles};
+use vehicles::{delete_vehicles, edit_vehicles, fetch_vehicles, get_vehicle, insert_vehicles};
 
 pub struct AppState {
     db: Pool<Postgres>,
@@ -46,6 +46,7 @@ async fn main() -> std::io::Result<()> {
             .service(insert_vehicles)
             .service(get_vehicle)
             .service(delete_vehicles)
+            .service(edit_vehicles)
         //.service(fetch_buys)
     })
     .bind(("127.0.0.1", 8080))?

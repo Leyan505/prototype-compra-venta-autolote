@@ -3,8 +3,8 @@
 
 {% block main %}
 <div>
-  <button id="insert-vehicles"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
-  <button id="exportar-vehiculos"><i class="fa-solid fa-file-export"></i>Exportar</button>
+  <button id="insert-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
+  <button id="export-vehicles"><i class="fa-solid fa-file-export"></i>Exportar</button>
 </div>
 
 <div class="table-wrapper">
@@ -28,8 +28,8 @@
           <tr>
             <td>
               <div class="btn-group accion-botones" role="group">
-                <button id="view-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
-                <a class="btn btn-warning" ><i class="fa-solid fa-pencil"></i></a>
+                <button id="view-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button> 
+                <button id="edit-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
                 <form method="POST" action="/delete_vehicles/{{vehiculo.matricula}}">
                   <button id="delete-vehicles" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
                 </form>
