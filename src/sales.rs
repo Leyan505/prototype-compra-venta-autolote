@@ -42,7 +42,7 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
 
 
 #[post("/sales")]
-pub async fn in_sales(state: web::Data< AppState>, new_sales: web::Form<Venta>)  //manda los datos como un webform, no se como hacerlo en json
+pub async fn insert_sales(state: web::Data< AppState>, new_sales: web::Form<Venta>)  //manda los datos como un webform, no se como hacerlo en json
 -> impl Responder {
 
     let result = sqlx::query!(
@@ -68,28 +68,28 @@ match result {
     }
 }
 
-// #[delete("/sales/{id_venta}")]
-// pub async fn del_sales(state: web::Data<AppState>,pool: web::Data<PgPool>, path: web::Path<i32>) -> impl Responder{
-//     let id_venta = path.into_inner();
+#[post("/delete_sales/{id_venta}")]
+pub async fn delete_sales(state: web::Data<AppState>, path: web::Path<(i32, )>) -> impl Responder{
+    let id_venta = path.into_inner().0;
 
-//     let result = sqlx::query!(
-//         r#"
-//         DELETE FROM venta WHERE id_venta = $1
-//         "#, 
-//         id_venta
-//     )
-//     .execute(&state.db)
-//     .await;
+    let result = sqlx::query!(
+        r#"
+        DELETE FROM venta WHERE id_venta = $1
+        "#, 
+        id_venta
+    )
+    .execute(&state.db)
+    .await;
 
-//     match result {
-//         Ok(_) => HttpResponse::SeeOther()
-//             .append_header(("Location", "/sales"))
-//             .finish(),
-//         Err(err) => {
-//             println!("Error al eliminar la venta: {:?}", err);
-//             HttpResponse::InternalServerError().body("Error al eliminar la venta")
-//         }
+    match result {
+        Ok(_) => HttpResponse::SeeOther()
+            .append_header(("Location", "/sales"))
+            .finish(),
+        Err(err) => {
+            println!("Error al eliminar la venta: {:?}", err);
+            HttpResponse::InternalServerError().body("Error al eliminar la venta")
+        }
         
-//     }
-// }
+    }
+}
 
