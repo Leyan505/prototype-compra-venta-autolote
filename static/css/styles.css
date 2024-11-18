@@ -110,7 +110,7 @@ body{
   width: 100% !important;
   height: 100px;
 }
-#vehiculos-table thead th {
+#vehiculos-table thead th, #vendedores-table thead th, #ventas-table thead th {
   position: sticky;
   top: 0;
   z-index: 2;
@@ -126,7 +126,7 @@ body{
   border-collapse: collapse;
 }
 
-#insert-vehicles, #export-vehicles, #nuevo-vendedor, #exportar-vendedores, #nueva-venta, #exportar-venta{
+#insert-vehicles, #export-vehicles, #insert-seller, #export-seller, #insert-sales, #export-sales{
   padding: 5px 15px;
 }
 
@@ -153,22 +153,22 @@ button#exportar-vehiculos:hover{
   background-color: rgba(71, 79, 122, 0.70);
 }
 
-button#nuevo-vendedor{
+button#insert-seller, #insert-sales{
   color: white;
   background-color: rgba(129, 104, 157, 0.88);
   border: none;
 }
 
-button#exportar-vendedores{
+button#export-seller, #export-sales{
   color:white;
   background-color: #474F7A;
   border: none;
 }
 
-button#nuevo-vendedor:hover{
+button#insert-seller:hover, #insert-sales:hover{
   background-color: rgba(129, 104, 157, 0.50);
 }
-button#exportar-vendedores:hover{
+button#export-seller:hover, #export-sales:hover{
   background-color: rgba(71, 79, 122, 0.70);
 }
 .accion-botones{
@@ -182,7 +182,7 @@ button#exportar-vendedores:hover{
   height: 40px;
   border-radius: 0;
 }
-#vehiculos-table tr:first-child(), #vendedores-table tr:first-child(){
+#vehiculos-table tr:first-child(), #vendedores-table tr:first-child(), #ventas-table tr:first-child(){
   margin: auto;
 }
 
