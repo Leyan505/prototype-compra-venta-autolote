@@ -30,9 +30,9 @@
               <button type="button" class="btn btn-warning">
                 <i class="fa-solid fa-pencil"></i>
               </button>
-              <button type="button" class="btn btn-danger">
-                <i class="fa-solid fa-circle-xmark"></i>
-              </button>
+              <form action="/delete_sellers/{{ vendedor.id_vendedor }}" method="POST">
+              <button id="delete-seller" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+            </form>
             </div>
           </td>
           <td>{{ vendedor.id_vendedor }}</td>
