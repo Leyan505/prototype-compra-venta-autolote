@@ -1,7 +1,7 @@
 $(function (){
   let table = new DataTable('#vehiculos-table');
   let table2 = new DataTable('#vendedores-table');
-
+  let table3 = new DataTable('#ventas-table');
 
   $('#vehicleModal').modal({
     keyboard: true,
