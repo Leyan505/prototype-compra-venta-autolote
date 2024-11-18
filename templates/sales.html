@@ -4,13 +4,15 @@
 
 {% block main %}
 <div>
-    <button id="nueva-venta"><i class="fa-solid fa-square-plus">Nuevo</i></button>
-    <button id="exportar-venta"><i class="fa-solid fa-file-export">Exportar</i></button>
-</div class="table-wrapper">
-<div>
+    <button id="insert-sales"><i class="fa-solid fa-square-plus"></i> Nuevo</button>
+    <button id="export-sales"><i class="fa-solid fa-file-export"></i> Exportar</button>
+</div>
+
+<div class="table-wrapper">
   <table class="table" id="ventas-table">
-    <thead class="table-dark">
+    <thead>
         <tr>
+            <th>Accion</th>
             <th>Id Venta</th>
             <th>Matricula</th>
             <th>Fecha Venta</th>
@@ -22,6 +24,19 @@
     <tbody>
         {% for venta in ventas %}
         <tr>
+            <td>
+                <div class="btn-group accion-botones" role="group">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventasModal" data-id="{{ venta.id_venta }}">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                  <button type="button" class="btn btn-warning">
+                    <i class="fa-solid fa-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" data-id="{{ venta.id_venta}}" type="submit" method="DELETE">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                  </button>
+                </div>
+              </td>
             <td>{{ venta.id_venta }}</td>
             <td>{{ venta.matricula }}</td>
             <td>{{ venta.fecha_venta }}</td>
