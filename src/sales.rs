@@ -3,9 +3,9 @@ use crate::AppState;
 use bigdecimal::BigDecimal;
 use tera::{Context, Tera};
 
-use actix_web::{get, http::header::FROM, post, web, HttpResponse, Responder};
+use actix_web::{delete, dev::Path, get, http::header::FROM, post, web, HttpResponse, Responder, Result};
 use serde::{Deserialize, Serialize};
-use sqlx::{self};
+use sqlx::{self, PgPool};
 
 #[derive(Serialize, Deserialize)]
 pub struct Venta {
@@ -41,30 +41,55 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
 
 
 
-// #[post("/sales")]
-// pub async fn in_sales(state: web::Data< AppState>, new_seller: web::Form<Ventasr>)  //manda los datos como un webform, no se como hacerlo en json
-// -> impl Responder {
+#[post("/sales")]
+pub async fn in_sales(state: web::Data< AppState>, new_sales: web::Form<Venta>)  //manda los datos como un webform, no se como hacerlo en json
+-> impl Responder {
+
+    let result = sqlx::query!(
+        r#"
+        INSERT INTO venta (matricula, fecha_venta, precio_venta, id_cliente, id_vendedor)
+        VALUES ($1, $2, $3, $4, $5)
+        "#,
+        new_sales.matricula,
+        new_sales.fecha_venta,
+        new_sales.precio_venta,
+        new_sales.id_cliente,
+        new_sales.id_vendedor,
+    )
+    .execute(&state.db)
+    .await;
+match result {
+    Ok(_) => HttpResponse::SeeOther()
+        .append_header(("Location", "/sales"))
+        .finish(),
+    Err(err) => {
+        HttpResponse::InternalServerError().body("Error al insertar una venta")
+    }
+    }
+}
+
+// #[delete("/sales/{id_venta}")]
+// pub async fn del_sales(state: web::Data<AppState>,pool: web::Data<PgPool>, path: web::Path<i32>) -> impl Responder{
+//     let id_venta = path.into_inner();
 
 //     let result = sqlx::query!(
 //         r#"
-//         INSERT INTO venta (matricula, fecha_venta, precio_venta, id_cliente, id_vendedor)
-//         VALUES ($1, $2, $3, $4, $5)
-//         "#,
-//         new_sales.matricula,
-//         new_sales.fecha_venta,
-//         new_sales.precio_venta,
-//         new_slaes.id_cliente,
-//         new_slaes.id_vendedor,
+//         DELETE FROM venta WHERE id_venta = $1
+//         "#, 
+//         id_venta
 //     )
 //     .execute(&state.db)
 //     .await;
-// match result {
-//     Ok(_) => HttpResponse::SeeOther()
-//         .append_header(("Location", "/sales"))
-//         .finish(),
-//     Err(err) => {
-//         HttpResponse::InternalServerError().body("Error al insertar una venta")
+
+//     match result {
+//         Ok(_) => HttpResponse::SeeOther()
+//             .append_header(("Location", "/sales"))
+//             .finish(),
+//         Err(err) => {
+//             println!("Error al eliminar la venta: {:?}", err);
+//             HttpResponse::InternalServerError().body("Error al eliminar la venta")
+//         }
+        
 //     }
-// }
 // }
 
