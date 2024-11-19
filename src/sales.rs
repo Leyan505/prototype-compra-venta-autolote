@@ -3,7 +3,7 @@ use crate::AppState;
 use bigdecimal::BigDecimal;
 use tera::{Context, Tera};
 
-use actix_web::{delete, dev::Path, get, http::header::FROM, post, web, HttpResponse, Responder, Result};
+use actix_web::{delete, dev::Path, get, http::header::FROM, post, web, HttpResponse, Responder, Result, error::InternalError};
 use serde::{Deserialize, Serialize};
 use sqlx::{self, PgPool};
 
@@ -38,14 +38,10 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
     }
 }
 
-
-
-
 #[post("/sales")]
-pub async fn insert_sales(state: web::Data< AppState>, new_sales: web::Form<Venta>)  //manda los datos como un webform, no se como hacerlo en json
--> impl Responder {
-
-    let result = sqlx::query!(
+pub async fn insert_sales(state: web::Data< AppState>, new_sales: web::Form<Venta>) -> impl Responder {
+    match sqlx::query_as!( 
+        Venta,
         r#"
         INSERT INTO venta (matricula, fecha_venta, precio_venta, id_cliente, id_vendedor)
         VALUES ($1, $2, $3, $4, $5)
@@ -57,12 +53,12 @@ pub async fn insert_sales(state: web::Data< AppState>, new_sales: web::Form<Vent
         new_sales.id_vendedor,
     )
     .execute(&state.db)
-    .await;
-match result {
+    .await
+{
     Ok(_) => HttpResponse::SeeOther()
         .append_header(("Location", "/sales"))
         .finish(),
-    Err(err) => {
+    Err(_) => {
         HttpResponse::InternalServerError().body("Error al insertar una venta")
     }
     }
@@ -85,11 +81,63 @@ pub async fn delete_sales(state: web::Data<AppState>, path: web::Path<(i32, )>) 
         Ok(_) => HttpResponse::SeeOther()
             .append_header(("Location", "/sales"))
             .finish(),
-        Err(err) => {
-            println!("Error al eliminar la venta: {:?}", err);
+        Err(_) => {
             HttpResponse::InternalServerError().body("Error al eliminar la venta")
         }
         
     }
+}
+
+
+#[get("/sales/salesDetails/{id_venta}")]
+pub async fn get_sales_details(state: web::Data<AppState>, path: web::Path<(i32, )>) -> impl Responder { 
+    let id_venta = path.into_inner().0;
+    match sqlx::query_as!(
+        Venta,
+        r#"
+         SELECT id_venta, matricula, fecha_venta, precio_venta, id_cliente, id_vendedor
+        FROM venta
+        WHERE id_venta = $1
+       "#,
+        id_venta
+    )   
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(venta) => Ok(web::Json(venta)),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),  // Convert the error to a string or handle it accordingly
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )),  // Error case
+    }
+}
+
+#[post("/edit_sales/")]
+pub async fn edit_sales(state: web::Data<AppState>, modified_sales: web::Form<Venta>) -> Result<HttpResponse, InternalError<String>> {
+    match sqlx::query!(r#"
+    UPDATE venta
+    SET matricula = $1, fecha_venta = $2, precio_venta = $3,
+    id_cliente = $4, id_vendedor = $5
+    WHERE id_venta = $6
+    "#,
+        modified_sales.matricula,
+        modified_sales.fecha_venta,
+        modified_sales.precio_venta,
+        modified_sales.id_cliente,
+        modified_sales.id_vendedor,
+        modified_sales.id_venta
+      
+    )
+    .execute(&state.db)
+    .await
+    {
+        Ok(_) => Ok(HttpResponse::SeeOther().append_header(("Location", "/sales")).finish()),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )),
+    }
+
+
 }
 

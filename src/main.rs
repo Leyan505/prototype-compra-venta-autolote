@@ -1,7 +1,7 @@
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
 use dotenv::dotenv;
-use sales::{delete_sales, get_sales};
+use sales::{delete_sales, edit_sales, get_sales, get_sales_details, insert_sales};
 use sellers::{delete_sellers, obtain_sellers, post_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use statics::read_static;
@@ -44,9 +44,13 @@ async fn main() -> std::io::Result<()> {
             .service(post_sellers)
             .service(obtain_sellers)
             .service(delete_sellers)
+            //sales
             .service(get_sales)
-            // .service(insert_sales)
+            .service(get_sales_details)
+            .service(insert_sales)
             .service(delete_sales)
+            .service(edit_sales)
+            //end sales
             .service(insert_vehicles)
             .service(get_vehicle)
             .service(delete_vehicles)

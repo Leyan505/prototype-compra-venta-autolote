@@ -21,7 +21,7 @@ pub async fn obtain_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -
         Vendedor,
         r#"
          SELECT id_vendedor, nombre, apellido, cedula
-        FROM vendedor
+        FROM vendedor WHERE estado = 'ACTIVO' 
        "#
     )
     .fetch_all(&state.db)
@@ -69,7 +69,7 @@ pub async fn delete_sellers(state: web::Data<AppState>, path: web::Path<(i32, )>
 
     let result = sqlx::query!(
         r#"
-        DELETE FROM vendedor WHERE id_vendedor = $1
+        UPDATE vendedor SET estado = 'OUT' WHERE id_vendedor = $1
         "#, 
         id_vendedor
     )
@@ -80,10 +80,8 @@ pub async fn delete_sellers(state: web::Data<AppState>, path: web::Path<(i32, )>
         Ok(_) => HttpResponse::SeeOther()
             .append_header(("Location", "/sellers"))
             .finish(),
-        Err(err) => {
-            println!("Error al eliminar la venta: {:?}, se viola una fk", err);
-            HttpResponse::InternalServerError().body("Error al eliminar la venta")
-        }
+        Err(err) => InternalError::new(err.to_string(), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR)
+        .error_response(),
         
     }
 }
