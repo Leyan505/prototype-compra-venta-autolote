@@ -1,4 +1,5 @@
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
+use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
 use dotenv::dotenv;
 use sales::{delete_sales, get_sales};
 use sellers::{delete_sellers, obtain_sellers, post_sellers};
@@ -9,6 +10,7 @@ use tera::{Context, Tera};
 mod sellers;
 mod sales;
 mod statics;
+mod costs;
 mod vehicles;
 use vehicles::{delete_vehicles, edit_vehicles, fetch_vehicles, get_vehicle, insert_vehicles};
 
@@ -49,7 +51,12 @@ async fn main() -> std::io::Result<()> {
             .service(get_vehicle)
             .service(delete_vehicles)
             .service(edit_vehicles)
+            .service(get_cost)
+            .service(fetch_costs)
+            .service(delete_costs)
+            .service(insert_costs)
         //.service(fetch_buys)
+            
     })
     .bind(("127.0.0.1", 8080))?
     .run()
