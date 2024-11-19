@@ -1,5 +1,5 @@
 :root{
-  --primary: white;
+  --primary: #E4EDF6;
   --secundary: #1F2544;
   --accent: #81689D;
 }
@@ -9,15 +9,46 @@
 }
 
 body{
- background-color: #F4F2F2; 
+ background-color: #E4EDF6; 
   overflow-x: hidden;
   overflow-y: hidden;
   font-family: Helvetica, Arial, sans-serif;
 }
 
+.topbar{
+  position: relative;
+  height: 50px;
+  top: 0;
+  left: 0;
+  background-color: #F3F7FB;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  box-shadow: 0 4px 8px -2px #D9E2ED;
+  width: 100%;
+}
+.topbar-content{
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.topbar-content i{
+  font-size: 24px;
+  align-items: center;
+}
+
+button.toggle-sidebar{
+  margin-left: 1em;
+}
+
+div.user-topbar{
+  margin-right: 1em;
+}
+
 .sidebar{
   height:100%;
-  width: 335px;
+  width: 0;
+  overflow-x: hidden;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -27,6 +58,22 @@ body{
   overflow-x: hidden;
   overflow-y: hidden;
   text-align: center;
+}
+
+.sidebar.active{
+  width: 335px;
+  overflow-x: auto;
+
+}
+
+.main.active{
+  margin-left: 335px;
+  width: calc(100vw - 335px);
+}
+
+.topbar.active{
+  left: 335px;
+  width: calc(100% - 335px);
 }
 
 .opcion-navbar{
@@ -58,7 +105,7 @@ body{
 .opciones-navbar i{
   color:white;
   display:inline;
-  position: fixed;
+  position: relative;
   left: 65px;
   font-size: 25px;
 }
@@ -76,11 +123,11 @@ body{
 }
 
 .main{
-  margin-left: 335px;
+  margin: auto;
   padding: 50px;
-  width: calc(100vw - 335px);
+  width: 100%;
   height: 100%;
-  background-color: #F4F2F2;
+  background-color: #E4EDF6;
   display: flex;
   align-items: center;
   justify-content: center;

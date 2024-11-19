@@ -3,6 +3,13 @@ $(function (){
   let table2 = new DataTable('#vendedores-table');
   let table3 = new DataTable('#ventas-table');
 
+  $(".toggle-sidebar").click(function(){
+    $(".sidebar").toggleClass('active');
+    $(".main").toggleClass('active');
+    $(".topbar").toggleClass('active');
+  });
+
+
   $('#vehicleModal').modal({
     keyboard: true,
     backdrop: "static",
