@@ -4,7 +4,7 @@
 
 {% block main %}
 <div>
-    <button id="insert-sales"><i class="fa-solid fa-square-plus"></i> Nuevo</button>
+    <button id="insert-sales" data-bs-toggle="modal" data-bs-target="#salesModal"><i class="fa-solid fa-square-plus"></i> Nuevo</button>
     <button id="export-sales"><i class="fa-solid fa-file-export"></i> Exportar</button>
 </div>
 
@@ -26,15 +26,11 @@
         <tr>
             <td>
                 <div class="btn-group accion-botones" role="group">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventasModal" data-id="{{ venta.id_venta }}">
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    <i class="fa-solid fa-pencil"></i>
-                  </button>
-                  <button type="button" class="btn btn-danger" data-id="{{ venta.id_venta}}" type="submit" method="DELETE">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                  </button>
+                  <button type="button" id="view-sales" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesModal" data-id="{{ venta.id_venta }}"><i class="fa-solid fa-eye"></i></button>
+                  <button type="button" id="edit-sales" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#salesModal" data-id="{{ venta.id_venta }}"><i class="fa-solid fa-pencil"></i> </button>
+                  <form action="/delete_sales/{{ venta.id_venta }}" method="POST">
+                  <button id="delete-sales" class="btn btn-danger" ><i class="fa-solid fa-circle-xmark"></i></button>
+                </form>
                 </div>
               </td>
             <td>{{ venta.id_venta }}</td>
@@ -47,5 +43,19 @@
         {% endfor %}
     </tbody>
   </table>
+</div>
+
+<div class="modal fade" id="salesModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div id="sales-header" class="modal-header">
+      </div>
+      <div id="sales-details" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

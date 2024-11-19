@@ -2,7 +2,7 @@ use crate::AppState;
 
 use tera::{Context, Tera};
 
-use actix_web::{get, http::header::FROM, post, web, HttpResponse, Responder};
+use actix_web::{error::InternalError, get, http::header::FROM, post, web, HttpResponse, Responder, ResponseError};
 use serde::{Deserialize, Serialize};
 use sqlx::{self};
 
@@ -21,7 +21,7 @@ pub async fn obtain_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -
         Vendedor,
         r#"
          SELECT id_vendedor, nombre, apellido, cedula
-        FROM vendedor
+        FROM vendedor WHERE estado = 'ACTIVO' 
        "#
     )
     .fetch_all(&state.db)
@@ -57,9 +57,32 @@ match result {
     Ok(_) => HttpResponse::SeeOther()
         .append_header(("Location", "/sellers"))
         .finish(),
-    Err(err) => {
-        HttpResponse::InternalServerError().body("Error al insertar el vendedor")
-    }
+        Err(err) => InternalError::new(err.to_string(), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR)
+        .error_response(),
+    
 }
+}
+
+#[post("/delete_sellers/{id_vendedor}")]
+pub async fn delete_sellers(state: web::Data<AppState>, path: web::Path<(i32, )>) -> impl Responder{
+    let id_vendedor = path.into_inner().0;
+
+    let result = sqlx::query!(
+        r#"
+        UPDATE vendedor SET estado = 'OUT' WHERE id_vendedor = $1
+        "#, 
+        id_vendedor
+    )
+    .execute(&state.db)
+    .await;
+
+    match result {
+        Ok(_) => HttpResponse::SeeOther()
+            .append_header(("Location", "/sellers"))
+            .finish(),
+        Err(err) => InternalError::new(err.to_string(), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR)
+        .error_response(),
+        
+    }
 }
 
