@@ -1,3 +1,42 @@
+INSERT INTO vehiculo
+VALUES 
+('CH123456789', 'ABC-123', 'Modelo X', 'Marca A', 'Rojo', 2020, '2021-05-30', 6720, 'DISPONIBLE'),
+('CH987654321', 'XYZ-456', 'Modelo Y', 'Marca B', 'Azul', 2021, '2022-07-12', 4265, 'DISPONIBLE'),
+('CH192837465', 'LMN-789', 'Modelo Z', 'Marca C', 'Negro', 2022, '2023-01-03', 3200, 'DISPONIBLE'),
+('CH564738291', 'JKL-012', 'Modelo W', 'Marca D', 'Blanco', 2019, '2020-09-06', 12900, 'DISPONIBLE'),
+('CH102938475', 'OPQ-345', 'Modelo V', 'Marca E', 'Verde', 2023, '2024-05-19', 22700, 'DISPONIBLE'),
+('BER123456690','PER-185','Modelo X', 'Marca A', 'Verde', 2020, '2020-09-06', 5300, 'DISPONIBLE'),
+('LOW578948226', 'HOW-349','Modelo X','Marca A', 'Verde', 2020, '2020-09-06', 5300, 'DISPONIBLE'),
+('GUW837832048','GLO-098','Modelo X', 'Marca A', 'Verde', 2020, '2020-09-06', 5300, 'DISPONIBLE'),
+('UYS123535245','ERM-234','Modelo X','Marca A', 'Verde', 2020, '2020-09-06', 5300, 'DISPONIBLE');
+
+INSERT INTO vendedor ("nombre", "apellido", "cedula")
+VALUES('Jose Andres', 'Guido Escobar', '001-140405-100J'),
+('Marcelo', 'Mendoza', '001-291197-009K'),
+('Guillermo Ernesto', 'Castillo', '001-060996-1025B');
+
+INSERT INTO cliente("nombre","apellido", "cedula")
+VALUES('Carlos', 'Garcia', '201-041187-044X'),
+('Gabriel', 'Marquez', '005-280175-032H'),
+('Peter', 'Romero', '001-090499-3456D');
+
+INSERT INTO gasto ("matricula", "tipo_reparacion", "monto", "fecha_finalizacion", "nombre_taller", "direccion_taller", "telefono_taller") 
+VALUES ('XYZ-456','Cambio de filtro de aceite','800','03-02-2024','Rapidito','De la perfecta 100 mts al sur','2222-4444'),
+ ('LMN-789','Llantas','5000','03-10-2024','Rapidito','De la perfecta 100 mts al sur','2222-4444');
+
+INSERT INTO promesa_venta("id_cliente","matricula","monto_promesa","estado", "fecha_realizacion","fecha_finalizacion")
+VALUES(1,'LMN-789',800,'RESERVADO', '2024-10-28', '2025-02-02'),
+(2 ,'JKL-012', 300, 'RESERVADO', '2024-10-27', '2025-02-01');
+
+UPDATE vehiculo
+SET estado = 'DISPONIBLE'
+WHERE matricula = 'LMN-789';
+
+
+INSERT INTO venta ("matricula", "fecha_venta", "precio_venta", "id_cliente","id_vendedor")
+VALUES('XYZ-456','2024-10-29', 7835, 3, 2);
+
+
 INSERT INTO Cliente (nombre, apellido, cedula) VALUES
 ('Juan', 'Pérez', '1234567890'),
 ('María', 'González', '2345678901'),
@@ -40,7 +79,8 @@ VALUES(1,'PER-185',800,'RESERVADO', '2024-10-28', '2025-02-02'),
 (2 ,'ERM-234', 300, 'RESERVADO', '2024-10-27', '2025-02-01');
 
 INSERT INTO venta ("matricula", "fecha_venta", "precio_venta", "id_cliente","id_vendedor")
-VALUES('HOW-349','2024-10-29', 7835, 3, 4);
+VALUES('HOW-349','2024-10-29', 7835, 3, 3);
+
 
 INSERT INTO Vehiculo (nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado) VALUES
 ('CH00123456789012345', 'ABC001', 'Model S', 'Tesla', 'Rojo', 2022, '2022-03-15', 79999.99, 'DISPONIBLE'),
@@ -74,18 +114,19 @@ INSERT INTO Vehiculo (nro_chasis, matricula, modelo, marca, color, anio, fecha_c
 ('CH00123456789012373', 'ABC029', 'Sonata', 'Hyundai', 'Negro', 2020, '2020-08-05', 24999.75, 'DISPONIBLE'),
 ('CH00123456789012374', 'ABC030', 'Elantra', 'Hyundai', 'Blanco', 2023, '2023-02-20', 19999.99, 'ENPROCESO');
 
+
 INSERT INTO Venta (matricula, fecha_venta, precio_venta, id_cliente, id_vendedor) VALUES
-('ABC003', '2022-04-01', 19999.75, 1, 4),
-('ABC011', '2023-04-10', 27999.99, 2, 5),
-('ABC015', '2023-05-15', 23999.00, 3, 4),
-('ABC019', '2023-06-20', 49999.99, 4, 6),
-('ABC023', '2023-07-25', 47999.00, 5, 4),
-('ABC027', '2023-08-30', 54999.00, 6, 6);
+('ABC003', '2022-04-01', 19999.75, 1, 1),
+('ABC011', '2023-04-10', 27999.99, 2, 2),
+('ABC015', '2023-05-15', 23999.00, 3, 3),
+('ABC019', '2023-06-20', 49999.99, 4, 3),
+('ABC023', '2023-07-25', 47999.00, 5, 2),
+('ABC027', '2023-08-30', 54999.00, 6, 1);
 
 INSERT INTO Promesa_Venta (id_cliente, matricula, monto_promesa, estado, fecha_realizacion, fecha_finalizacion) VALUES
 (1, 'ABC004', 59999.00, 'RESERVADO', '2023-01-25', NULL),
 (2, 'ABC008', 26999.99, 'RESERVADO', '2021-08-25', NULL),
-(3, 'ABC012', 29999.00, 'RESERVADO', '2019-12-20', NULL),
+(3, 'ABC012', 29999.00, 'RESERVADO', '2019-12-20', NULL),                       
 (4, 'ABC016', 45999.00, 'RESERVADO', '2021-11-20', NULL),
 (5, 'ABC020', 29999.50, 'RESERVADO', '2022-01-18', NULL),
 (6, 'ABC024', 33999.50, 'RESERVADO', '2022-09-29', NULL),
@@ -99,3 +140,9 @@ INSERT INTO Gasto (matricula, tipo_reparacion, monto, fecha_finalizacion, nombre
 ('ABC020', 'Mantenimiento general', 200.00, '2022-02-20', 'Taller Multiservicio', 'Calle 34, Ciudad', '555-1314'),
 ('ABC024', 'Cambio de batería', 300.00, '2022-10-10', 'Baterías y Talleres', 'Calle 56, Ciudad', '555-1516'),
 ('ABC028', 'Reparación de transmisión', 800.00, '2021-04-15', 'Transmisiones del Norte', 'Avenida 78, Ciudad', '555-1718');
+
+INSERT INTO "public"."gasto" ("matricula", "tipo_reparacion", "monto", "fecha_finalizacion", "nombre_taller", "direccion_taller", "telefono_taller")
+VALUES ('ABC003','Cambio de aceite','700','2021-06-16','Rapiditos','Avenida esta, 32','555-1342'),
+('ABC011','Cambio de vidrio delatero','2000','2022-07-29','La casa del vidrio','Testa avenida 45','555-0987'),
+('ABC015','Overhaull','5893','2022-03-01','El chino','Managua calle 12','555-3214'),
+('ABC019','Mantenimiento de frenos','1000','2020-10-05','Brembo Ni','Ticuantepe avenida 5','555-3134');
