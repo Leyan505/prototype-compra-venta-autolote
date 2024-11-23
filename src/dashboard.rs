@@ -8,7 +8,7 @@ use sqlx::{self, types::{chrono, BigDecimal}, FromRow};
 use tera::{Context, Tera};
 
 #[get("/")]
-pub async fn show(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder{
+pub async fn index(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder{
     let mut context = Context::new();
     HttpResponse::Ok().body(tera.render("index.html", &context).unwrap())
 }

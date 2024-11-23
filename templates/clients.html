@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block titulo %} Clientes {% endblock %}
+
+{% block main %}
+<div class="card-table">
+  <div>
+    <button id="insert-clients" data-bs-toggle="modal" data-bs-target="#clientsModal"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
+    <button id="export-clients"><i class="fa-solid fa-file-export"></i>Exportar</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table id="clientes-table" class="table">
+      <thead>
+        <tr>
+          <th scope="col">accion</th> 
+          <th scope="col">id</th>
+          <th scope="col">cedula</th>
+          <th scope="col">nombre</th>
+          <th scope="col">apellido</th>
+        </tr>
+      </thead>
+        <tbody>
+          {% for cliente in clientes %}
+            <tr>
+              <td>
+                <div class="btn-group accion-botones" role="group">
+                  <button id="edit-client" data-bs-toggle="modal" data-bs-target="#clientsModal" data-id="{{cliente.id_cliente}}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
+                  <form method="POST" action="/delete_clients/{{cliente.id_cliente}}">
+                    <button id="delete-clients" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+                  </form>
+                </div>
+              </td>
+              <td>{{cliente.id_cliente}}</td>
+              <td>{{cliente.nombre}}</td>
+              <td>{{cliente.apellido}}</td>
+              <td>{{cliente.cedula}}</td>
+            </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal fade" id="clientsModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div id="clients-header" class="modal-header">
+        </div>
+        <div id="clients-details" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

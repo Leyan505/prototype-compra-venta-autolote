@@ -1,75 +1,32 @@
 {% extends "base.html" %}
-{% block titulo %} AUTOLOTE {% endblock %}
+{% block titulo %} EL PELON {% endblock %}
 
 {% block main %}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
+<div class="dashboard-cards row-cols-2">
+  <div class="total-mensuales-card col">
+    
+  </div>
+  <div class="entrada-mensuales-card col">
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
-    </div>
+  </div>
+  <div class="salida-mensuales-card col">
+
+  </div>
+  <div class="cantidad-ventas-mensuales-card col">
+
   </div>
 </div>
+<div class="dashboard-grid">
+  <div class="Ventas-por-marca">
+  </div>
+  <div class="Ventas-por-mes">
+  </div>
+  <div class="gastos-por-mes">
+  </div>
+  <div class="compras-por-mes">
+  </div>
+  
 
-
-<div>
-  <button id="nuevo-vehiculos"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
-  <button id="exportar-vehiculos"><i class="fa-solid fa-file-export"></i>Exportar</button>
 </div>
-
-<div class="table-wrapper">
-  <table id="vehiculos-table" class="table">
-    <thead>
-      <tr>
-        <th scope="col">Acción</th>
-        <th scope="col">Matricula</th>
-        <th scope="col">Nro. chasis</th>
-        <th scope="col">Marca</th>
-        <th scope="col">Modelo</th>
-        <th scope="col">Color</th>
-        <th scope="col">Año</th>
-        <th scope="col">Estado</th>
-        <th scope="col">Fecha compra</th>
-        <th scope="col">Precio compra</th>
-      </tr>
-    </thead>
-      <tbody>
-        {% for vehiculo in vehiculos %}
-          <tr>
-            <td>
-              <div class="btn-group accion-botones" role="group">
-                <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
-                <button type="button" class="btn btn-warning" ><i class="fa-solid fa-pencil"></i></button>
-                <button type="button" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
-              </div>
-            </td>
-            <td>{{vehiculo.matricula}}</td>
-            <td>{{vehiculo.nro_chasis}}</td>
-            <td>{{vehiculo.marca}}</td>
-            <td>{{vehiculo.modelo}}</td>
-            <td>{{vehiculo.color}}</td>
-            <td>{{vehiculo.anio}}</td>
-            <td>{{vehiculo.fecha_compra}}</td>
-            <td>{{vehiculo.fecha_compra}}</td>
-            <td>{{vehiculo.precio_compra}}$</td>
-          </tr>
-        {% endfor %}
-    </tbody>
-  </table>
 {% endblock %}
 

@@ -83,10 +83,18 @@ div.user-topbar{
   font-size: 25px;
   display: block;
   width: 100%;
+  cursor: default;
 }
 
 .logo-navbar{
   padding-top: 50px;
+}
+
+.logo-navbar a{
+  display: block;
+  width: 10em;
+  text-decoration: none;
+  margin: auto;
 }
 
 .logo-navbar h3{

@@ -1,66 +1,70 @@
 {% extends "base.html" %}
-{% block titulo %} AUTOLOTE {% endblock %}
+{% block titulo %} Vehiculos {% endblock %}
 
 {% block main %}
-<div>
-  <button id="insert-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
-  <button id="export-vehicles"><i class="fa-solid fa-file-export"></i>Exportar</button>
-</div>
+<div class="card-table">
 
-<div class="table-wrapper">
-  <table id="vehiculos-table" class="table">
-    <thead>
-      <tr>
-        <th scope="col">Acción</th>
-        <th scope="col">Matricula</th>
-        <th scope="col">Nro. chasis</th>
-        <th scope="col">Marca</th>
-        <th scope="col">Modelo</th>
-        <th scope="col">Color</th>
-        <th scope="col">Año</th>
-        <th scope="col">Estado</th>
-        <th scope="col">Fecha compra</th>
-        <th scope="col">Precio compra</th>
-      </tr>
-    </thead>
-      <tbody>
-        {% for vehiculo in vehiculos %}
-          <tr>
-            <td>
-              <div class="btn-group accion-botones" role="group">
-                <button id="view-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button> 
-                <button id="edit-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
-                <form method="POST" action="/delete_vehicles/{{vehiculo.matricula}}">
-                  <button id="delete-vehicles" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
-                </form>
-              </div>
-            </td>
-            <td>{{vehiculo.matricula}}</td>
-            <td>{{vehiculo.nro_chasis}}</td>
-            <td>{{vehiculo.marca}}</td>
-            <td>{{vehiculo.modelo}}</td>
-            <td>{{vehiculo.color}}</td>
-            <td>{{vehiculo.anio}}</td>
-            <td>{{vehiculo.estado}}</td>
-            <td>{{vehiculo.fecha_compra}}</td>
-            <td>{{vehiculo.precio_compra}}$</td>
-          </tr>
-        {% endfor %}
-    </tbody>
-  </table>
-</div>
+  <div>
+    <button id="insert-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
+    <button id="export-vehicles"><i class="fa-solid fa-file-export"></i>Exportar</button>
+  </div>
 
-<div class="modal fade" id="vehicleModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div id="vehicle-header" class="modal-header">
-      </div>
-      <div id="vehicle-details" class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
+  <div class="table-wrapper">
+    <table id="vehiculos-table" class="table">
+      <thead>
+        <tr>
+          <th scope="col">Acción</th>
+          <th scope="col">Matricula</th>
+          <th scope="col">Nro. chasis</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Color</th>
+          <th scope="col">Año</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Fecha compra</th>
+          <th scope="col">Precio compra</th>
+        </tr>
+      </thead>
+        <tbody>
+          {% for vehiculo in vehiculos %}
+            <tr>
+              <td>
+                <div class="btn-group accion-botones" role="group">
+                  <button id="view-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button> 
+                  <button id="edit-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal" data-id="{{vehiculo.matricula}}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
+                  <form method="POST" action="/delete_vehicles/{{vehiculo.matricula}}">
+                    <button id="delete-vehicles" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+                  </form>
+                </div>
+              </td>
+              <td>{{vehiculo.matricula}}</td>
+              <td>{{vehiculo.nro_chasis}}</td>
+              <td>{{vehiculo.marca}}</td>
+              <td>{{vehiculo.modelo}}</td>
+              <td>{{vehiculo.color}}</td>
+              <td>{{vehiculo.anio}}</td>
+              <td>{{vehiculo.estado}}</td>
+              <td>{{vehiculo.fecha_compra}}</td>
+              <td>{{vehiculo.precio_compra}}$</td>
+            </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal fade" id="vehicleModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div id="vehicle-header" class="modal-header">
+        </div>
+        <div id="vehicle-details" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}

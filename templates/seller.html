@@ -1,67 +1,69 @@
 {% extends "base.html" %} 
 
-{% block titulo %} AUTOLOTE {% endblock %}
+{% block titulo %} Vendedores {% endblock %}
 
 {% block main %}
-<div>
-  <button id="insert-seller"><i class="fa-solid fa-square-plus"></i> Nuevo</button>
-  <button id="export-seller"><i class="fa-solid fa-file-export"></i> Exportar</button>
-</div>
+<div class="card-table">
 
-<div class="table-wrapper">
-  <table class="table" id="vendedores-table">
-    <thead>
-      <tr>
-        <th>Acción</th>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Cédula</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for vendedor in vendedores %}
+  <div>
+    <button id="insert-seller"><i class="fa-solid fa-square-plus"></i> Nuevo</button>
+    <button id="export-seller"><i class="fa-solid fa-file-export"></i> Exportar</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="table" id="vendedores-table">
+      <thead>
         <tr>
-          <td>
-            <div class="btn-group accion-botones" role="group">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vendedorModal" data-id="{{ vendedor.id_vendedor }}">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-              <button type="button" class="btn btn-warning">
-                <i class="fa-solid fa-pencil"></i>
-              </button>
-              <form action="/delete_sellers/{{ vendedor.id_vendedor }}" method="POST">
-              <button id="delete-seller" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
-            </form>
-            </div>
-          </td>
-          <td>{{ vendedor.id_vendedor }}</td>
-          <td>{{ vendedor.nombre }}</td>
-          <td>{{ vendedor.apellido }}</td>
-          <td>{{ vendedor.cedula }}</td>
+          <th>Acción</th>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Cédula</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        {% for vendedor in vendedores %}
+          <tr>
+            <td>
+              <div class="btn-group accion-botones" role="group">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vendedorModal" data-id="{{ vendedor.id_vendedor }}">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button type="button" class="btn btn-warning">
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+                <form action="/delete_sellers/{{ vendedor.id_vendedor }}" method="POST">
+                <button id="delete-seller" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
+              </form>
+              </div>
+            </td>
+            <td>{{ vendedor.id_vendedor }}</td>
+            <td>{{ vendedor.nombre }}</td>
+            <td>{{ vendedor.apellido }}</td>
+            <td>{{ vendedor.cedula }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-<!-- Modal
+  <!-- Modal
 
-<div class="modal fade" id="vendedorModal" tabindex="-1" aria-labelledby="vendedorModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        ...
-        /button>
-      </div>
-      <div id="vendedorDetails" class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+  <div class="modal fade" id="vendedorModal" tabindex="-1" aria-labelledby="vendedorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          ...
+          /button>
+        </div>
+        <div id="vendedorDetails" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
       </div>
     </div>
   </div>
+  -->
 </div>
--->
-
 {% endblock %}

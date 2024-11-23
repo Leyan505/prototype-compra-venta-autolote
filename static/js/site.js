@@ -2,6 +2,8 @@ $(function (){
   let table = new DataTable('#vehiculos-table');
   let table2 = new DataTable('#vendedores-table');
   let table3 = new DataTable('#ventas-table');
+  let table4 = new DataTable('#clientes-table');
+
 
   $(".toggle-sidebar").click(function(){
     $(".sidebar").toggleClass('active');
@@ -286,17 +288,17 @@ $(function (){
         </div>
       </form>`);
     } else if (opc == "edit-sales") {
-      $.get("/sales/salesDetails/" + getIdFromRow, {
+      $.get("/clients/clientDetails/" + getIdFromRow, {
         format: 'json',
         ajax: true
       }).done(function (data) {
-        $('#sales-header').html(`<h3>Editar Venta</h3>`);
-        $('#sales-details').html(`<form action="/edit_sales/" method="POST" enctype="application/x-www-form-urlencoded">
+        $('#clients-header').html(`<h3>Editar Cliente</h3>`);
+        $('#clients-details').html(`<form action="/edit_client/" method="POST" enctype="application/x-www-form-urlencoded">
           <div class="row mb-3">
             <div class="col-6">
-              <label for="matricula" class="form-label">Matrícula</label>
-              <input type="text" class="form-control" value="${data[0]["matricula"]}" required>
-              <input type="hidden" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}">
+              <label for="cedula" class="form-label">Cédula</label>
+              <input type="text" class="form-control" value="${data[0]["cedula"]}" required>
+              <input type="hidden" class="form-control" name="cedula" id="cedula" value="${data[0]["cedula"]}">
             </div>
             <div class="col-6">
               <label for="fecha_venta" class="form-label">Fecha de Venta</label>
@@ -326,5 +328,70 @@ $(function (){
       });
     }
   });
+
+    // CLIENTES
+    $('#clientsModal').modal({
+      keyboard: true,
+      backdrop: "static",
+      show: false,
+    }).on('show.bs.modal', function (event) {
+      var getIdFromRow = $(event.relatedTarget).closest('button').attr('data-id');
+      var opc = $(event.relatedTarget).closest('button').attr('id');
+    
+    if (opc == "insert-clients") {
+      $('#sales-header').html(`<h3>Insertar Cliente</h3>`);
+      $('#sales-details').html(`<form action="/clients" method="POST" enctype="application/x-www-form-urlencoded">
+        <div class="row mb-3">
+          <div class="col-12">
+            <label for="cedula" class="form-label">Cédula</label>
+            <input type="text" class="form-control" name="cedula" id="cedula" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" required>
+          </div>
+          <div class="col-6">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" name="apellido" id="apellido" required>
+          </div>
+        </div>
+        <div class="flex-btn-modal">
+          <button id="btnInsertarCliente" class="btn" type="submit">Insertar</button>
+        </div>
+      </form>`);
+    } else if (opc == "edit-client") {
+      $.get("/clients/clientDetails/" + getIdFromRow, {
+        format: 'json',
+        ajax: true
+      }).done(function (data) {
+        $('#sales-header').html(`<h3>Editar Venta</h3>`);
+        $('#sales-details').html(`<form action="/edit_client/" method="POST" enctype="application/x-www-form-urlencoded">
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="cedula" class="form-label">Cédula</label>
+              <input type="text" class="form-control" value="${data[0]["cedula"]}" required>
+              <input type="hidden" class="form-control" name="id_cliente" id="id_cliente" value="${data[0]["id_cliente"]}">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" name="nombre" id="nombre" value="${data[0]["nombre"]}" required>
+            </div>
+            <div class="col-6">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" name="apellido" id="apellido" value="${data[0]["apellido"]}" required>
+            </div>
+          </div>
+          <div class="flex-btn-modal">
+            <button id="btnEditarCliente" class="btn" type="submit">Editar</button>
+          </div>
+        </form>`);
+      });
+    }
+  });
 });
+
 

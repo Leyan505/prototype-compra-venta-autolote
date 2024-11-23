@@ -1,6 +1,7 @@
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
 use dotenv::dotenv;
+use dashboard::{index};
 use sales::{delete_sales, edit_sales, get_sales, get_sales_details, insert_sales};
 use sellers::{delete_sellers, obtain_sellers, post_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
@@ -8,10 +9,13 @@ use statics::read_static;
 use tera::{Context, Tera};
 
 mod sellers;
+mod dashboard;
 mod sales;
 mod statics;
 mod costs;
 mod vehicles;
+mod clients;
+use clients::{fetch_clients, delete_client, edit_client, insert_client, get_client};
 use vehicles::{delete_vehicles, edit_vehicles, fetch_vehicles, get_vehicle, insert_vehicles};
 
 pub struct AppState {
@@ -59,8 +63,16 @@ async fn main() -> std::io::Result<()> {
             .service(fetch_costs)
             .service(delete_costs)
             .service(insert_costs)
-        //.service(fetch_buys)
-            
+
+            //dashboard
+            .service(index)
+
+            //clients
+            .service(fetch_clients)
+            .service(delete_client)
+            .service(edit_client)
+            .service(insert_client)
+            .service(get_client)             
     })
     .bind(("127.0.0.1", 8080))?
     .run()

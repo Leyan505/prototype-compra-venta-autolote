@@ -1,72 +1,75 @@
 {% extends "base.html" %}
 
-{% block titulo %} AUTOLOTE {% endblock %}
+{% block titulo %} Gastos {% endblock %}
 
 {% block main %}
-<div>
-  <button id="insert-costs" data-bs-toggle="modal" data-bs-target="#costModal"><i class="fa-solid fa-square-plus"></i> Nuevo </button>
-  
-  <button id="export-costs"><i class="fa-solid fa-file-export"></i> Exportar</button>
-</div>
+<div class="card-table">
 
-<div class="table-wrapper">
-  <table id="costs-table" class="table">
-    <thead>
-      
+  <div>
+    <button id="insert-costs" data-bs-toggle="modal" data-bs-target="#costModal"><i class="fa-solid fa-square-plus"></i> Nuevo </button>
+    
+    <button id="export-costs"><i class="fa-solid fa-file-export"></i> Exportar</button>
+  </div>
 
-      <tr>
-        <th scope="col">Acción</th>
-        <th scope="col">ID Gasto</th>
-        <th scope="col">Matrícula</th>
-        <th scope="col">Tipo de Reparación</th>
-        <th scope="col">Monto</th>
-        <th scope="col">Fecha de Finalización</th>
-        <th scope="col">Nombre del Taller</th>
-        <th scope="col">Dirección del Taller</th>
-        <th scope="col">Teléfono del Taller</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for gasto in gastos %}
+  <div class="table-wrapper">
+    <table id="costs-table" class="table">
+      <thead>
+        
+
         <tr>
-          <td>
-            <div class="btn-group accion-botones" role="group">
-              <button id="view-costs" data-bs-toggle="modal" data-bs-target="#costModal" data-id="{{gasto.id_gasto}}" type="button" class="btn btn-primary">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-              <button id="edit-costs" data-bs-toggle="modal" data-bs-target="#costModal" data-id="{{gasto.id_gasto}}" class="btn btn-warning">
-                <i class="fa-solid fa-pencil"></i>
-              </button>
-              <form method="POST" action="/delete_costs/{{gasto.id_gasto}}">
-                <button id="delete-costs" class="btn btn-danger">
-                  <i class="fa-solid fa-circle-xmark"></i>
-                </button>
-              </form>
-            </div>
-          </td>
-          <td>{{gasto.id_gasto}}</td>
-          <td>{{gasto.matricula}}</td>
-          <td>{{gasto.tipo_reparacion}}</td>
-          <td>{{gasto.monto}}</td>
-          <td>{{gasto.fecha_finalizacion}}</td>
-          <td>{{gasto.nombre_taller}}</td>
-          <td>{{gasto.direccion_taller}}</td>
-          <td>{{gasto.telefono_taller}}</td>
+          <th scope="col">Acción</th>
+          <th scope="col">ID Gasto</th>
+          <th scope="col">Matrícula</th>
+          <th scope="col">Tipo de Reparación</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Fecha de Finalización</th>
+          <th scope="col">Nombre del Taller</th>
+          <th scope="col">Dirección del Taller</th>
+          <th scope="col">Teléfono del Taller</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        {% for gasto in gastos %}
+          <tr>
+            <td>
+              <div class="btn-group accion-botones" role="group">
+                <button id="view-costs" data-bs-toggle="modal" data-bs-target="#costModal" data-id="{{gasto.id_gasto}}" type="button" class="btn btn-primary">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button id="edit-costs" data-bs-toggle="modal" data-bs-target="#costModal" data-id="{{gasto.id_gasto}}" class="btn btn-warning">
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+                <form method="POST" action="/delete_costs/{{gasto.id_gasto}}">
+                  <button id="delete-costs" class="btn btn-danger">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+            <td>{{gasto.id_gasto}}</td>
+            <td>{{gasto.matricula}}</td>
+            <td>{{gasto.tipo_reparacion}}</td>
+            <td>{{gasto.monto}}</td>
+            <td>{{gasto.fecha_finalizacion}}</td>
+            <td>{{gasto.nombre_taller}}</td>
+            <td>{{gasto.direccion_taller}}</td>
+            <td>{{gasto.telefono_taller}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-<div class="modal fade" id="costModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div id="cost-header" class="modal-header">
-      </div>
-      <div id="cost-details" class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
+  <div class="modal fade" id="costModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div id="cost-header" class="modal-header">
+        </div>
+        <div id="cost-details" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn close-btn" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>

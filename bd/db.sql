@@ -1,3 +1,10 @@
+DROP TABLE venta;
+DROP TABLE promesa_venta;
+DROP TABLE cliente;
+DROP TABLE gasto;
+DROP TABLE vehiculo;
+DROP TABLE vendedor;
+
 CREATE TABLE Vehiculo (
     nro_chasis VARCHAR(50) UNIQUE NOT NULL,
     matricula VARCHAR(15) PRIMARY KEY,
