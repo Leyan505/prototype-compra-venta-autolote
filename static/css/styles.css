@@ -164,23 +164,27 @@ div.user-topbar{
   overflow-x: hidden;
 }*/
 
-#vehiculos-table, #vendedores-table, #ventas-table{
+#vehiculos-table, #vendedores-table, #ventas-table,
+#clientes-table{
   display: block;
   overflow-y: auto;
   height: 400px;
 }
+
 .table-wrapper{
   width: 100% !important;
   height: 100px;
 }
-#vehiculos-table thead th, #vendedores-table thead th, #ventas-table thead th {
+#vehiculos-table thead th, #vendedores-table thead th, #ventas-table thead th,
+#clientes-table thead th {
   position: sticky;
   top: 0;
   z-index: 2;
 }
 
-#vehiculos-table th, #vendedores-table th, #ventas-table th{
-  background-color: rgba(129, 104, 157, 0.88);
+#vehiculos-table th, #vendedores-table th, #ventas-table th,
+#clientes-table th{
+  background-color: rgba(45, 55, 112, 0.7);
   color: white;
 }
 
@@ -189,7 +193,8 @@ div.user-topbar{
   border-collapse: collapse;
 }
 
-#insert-vehicles, #export-vehicles, #insert-seller, #export-seller, #insert-sales, #export-sales{
+#insert-vehicles, #export-vehicles, #insert-seller, #export-seller, #insert-sales, #export-sales,
+#insert-clients, #export-clients{
   padding: 5px 15px;
 }
 
@@ -197,41 +202,22 @@ button i{
   margin-right: 4px;
 }
 
-button#insert-vehicles{
+button#insert-seller, #insert-sales, #insert-vehicles, #insert-clients{
   color: white;
   background-color: rgba(129, 104, 157, 0.88);
   border: none;
 }
 
-button#export-vehicles{
+button#export-seller, #export-sales, #export-vehicles, #export-clients{
   color:white;
   background-color: #474F7A;
   border: none;
 }
 
-button#nuevo-vehiculos:hover{
+button#insert-seller:hover, #insert-sales:hover, #nuevo-vehiculos:hover{
   background-color: rgba(129, 104, 157, 0.50);
 }
-button#exportar-vehiculos:hover{
-  background-color: rgba(71, 79, 122, 0.70);
-}
-
-button#insert-seller, #insert-sales{
-  color: white;
-  background-color: rgba(129, 104, 157, 0.88);
-  border: none;
-}
-
-button#export-seller, #export-sales{
-  color:white;
-  background-color: #474F7A;
-  border: none;
-}
-
-button#insert-seller:hover, #insert-sales:hover{
-  background-color: rgba(129, 104, 157, 0.50);
-}
-button#export-seller:hover, #export-sales:hover{
+button#export-seller:hover, #export-sales:hover, #exportar-vehiculos:hover{
   background-color: rgba(71, 79, 122, 0.70);
 }
 .accion-botones{
@@ -245,12 +231,13 @@ button#export-seller:hover, #export-sales:hover{
   height: 40px;
   border-radius: 0;
 }
-#vehiculos-table tr:first-child(), #vendedores-table tr:first-child(), #ventas-table tr:first-child(){
+#vehiculos-table tr:first-child(), #vendedores-table tr:first-child(), #ventas-table tr:first-child(),
+#clientes-table tr:first-child(){
   margin: auto;
 }
 
 div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover{
-  background-color: var(--accent) !important;
+  background-color: rgba(45, 55, 112, 0.7) !important;
   color: white !important;
 }
 
@@ -307,12 +294,7 @@ div.dt-container .dt-paging .dt-paging-button:hover{
 
 }
 
-button#btnInsertarVehiculo, button#btnEditarVehiculo {
-  background-color: rgba(45, 55, 112, 0.7);
-  color: white;
-  width: 35%;
-}
-button#btnInsertarVenta, button#btnEditarVenta{
+button#btnInsertarVehiculo, button#btnEditarVehiculo, button#btnInsertarVenta, button#btnEditarVenta{
   background-color: rgba(45, 55, 112, 0.7);
   color: white;
   width: 35%;
