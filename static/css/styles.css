@@ -11,12 +11,11 @@
 body{
  background-color: #E4EDF6; 
   overflow-x: hidden;
-  overflow-y: hidden;
   font-family: Helvetica, Arial, sans-serif;
 }
 
 .topbar{
-  position: relative;
+  position: sticky;
   height: 50px;
   top: 0;
   left: 0;
@@ -328,14 +327,14 @@ div#vehicle-header, div#sales-header, div#clients-header{
   width: 100%;
   height: 100%;
   grid-template-columns: 15% auto;
-  gap: 5%;
+  gap: 1.5rem;
   background: var(--primary);
 }
 
 .dashboard .dashboard-card{
   display: flex;
   flex-direction: column;
-  gap: 3%;
+  justify-content: space-between;
   height: 100%;
 }
 
@@ -343,29 +342,33 @@ div#vehicle-header, div#sales-header, div#clients-header{
 .cantidad-ventas-mensuales-card{
   background-color: white;
   padding: 2em;
-
+  border-radius: 0.5em;
 }
 
 .dashboard-grid{
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 3%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.5rem;
   height: 100%;
 }
 
 .Ventas-por-marca, .Ventas-por-mes, .gastos-por-mes, .compras-por-mes{
   background-color: white;
   padding: 2em;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5em;
 }
 
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2;
+
+#chart-ventas-container, #chart-marca-container, #chart-gastos-container,
+#chart-compras-container{
+  width: 80%;
+  margin: auto;
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  shape-rendering: crispEdges;
+#chart-marca, #chart-ventas, #chart-gastos, #chart-compras{
+  max-height: 300px;
 }
+
