@@ -38,6 +38,27 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
     }
 }
 
+#[get("/fetch_sales")]
+pub async fn fetch_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+    let mut context = Context::new();
+    match sqlx::query_as!(
+        Venta,
+        r#"
+         SELECT id_venta, matricula, fecha_venta, precio_venta, id_cliente, id_vendedor
+        FROM venta
+       "#
+    )
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(ventas) => {
+            context.insert("ventas", &ventas);
+            HttpResponse::Ok().body(tera.render("sales.html", &context).unwrap())
+        }
+        Err(_) => HttpResponse::NotFound().json("No sales found"),
+    }
+}
+
 #[post("/sales")]
 pub async fn insert_sales(state: web::Data< AppState>, new_sales: web::Form<Venta>) -> impl Responder {
     match sqlx::query_as!( 

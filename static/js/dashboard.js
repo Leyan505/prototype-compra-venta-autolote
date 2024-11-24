@@ -1,5 +1,8 @@
 $(function(){
 
+
+    fetch("/fetch_sales")
+
     //Ventas
     var ctx = document.getElementById('chart-ventas').getContext('2d');
     var myChart = new Chart(ctx, {

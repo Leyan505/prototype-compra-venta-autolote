@@ -57,6 +57,7 @@ async fn main() -> std::io::Result<()> {
             .service(insert_sales)
             .service(delete_sales)
             .service(edit_sales)
+            .service(fetch_sales)
             //end sales
             .service(insert_vehicles)
             .service(get_vehicle)
