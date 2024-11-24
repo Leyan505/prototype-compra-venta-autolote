@@ -295,6 +295,7 @@ $('#salesModal').modal({
         <div class="row mb-3">
           <div class="col-6">
             <label for="matricula" class="form-label">Matrícula</label>
+            <input type="hidden" name="id_venta" id="id_venta" value="${data[0]["id_venta"]}">
             <input type="text" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}" disabled>
             <input type="hidden" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}">
           </div>
@@ -467,6 +468,7 @@ $('#salesModal').modal({
               <div class="row mb-3">
                 <div class="col-6">
                   <label for="nombre" class="form-label">Nombre</label>
+                  <input type="hidden" name="id_vendedor" id="id_vendedor" value="${data[0]["id_vendedor"]}">
                   <input type="text" class="form-control" name="nombre" id="nombre" value="${data[0]["nombre"]}" required>
                 </div>
                 <div class="col-6">
