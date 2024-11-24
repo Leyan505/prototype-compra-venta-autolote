@@ -116,11 +116,10 @@ pub async fn get_sales_details(state: web::Data<AppState>, path: web::Path<(i32,
 pub async fn edit_sales(state: web::Data<AppState>, modified_sales: web::Form<Venta>) -> Result<HttpResponse, InternalError<String>> {
     match sqlx::query!(r#"
     UPDATE venta
-    SET matricula = $1, fecha_venta = $2, precio_venta = $3,
-    id_cliente = $4, id_vendedor = $5
-    WHERE id_venta = $6
+    SET fecha_venta = $1, precio_venta = $2,
+    id_cliente = $3, id_vendedor = $4
+    WHERE id_venta = $5 
     "#,
-        modified_sales.matricula,
         modified_sales.fecha_venta,
         modified_sales.precio_venta,
         modified_sales.id_cliente,

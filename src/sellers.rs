@@ -1,8 +1,8 @@
-use crate::AppState;
+use crate::{vehicles::state, AppState};
 
 use tera::{Context, Tera};
 
-use actix_web::{error::InternalError, get, http::header::FROM, post, web, HttpResponse, Responder, ResponseError};
+use actix_web::{error::InternalError, get, http::header::FROM, post, web, App, HttpResponse, Responder, ResponseError};
 use serde::{Deserialize, Serialize};
 use sqlx::{self};
 
@@ -15,7 +15,7 @@ pub struct Vendedor {
 }
 
 #[get("/sellers")]
-pub async fn obtain_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+pub async fn get_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
     let mut context = Context::new();
     match sqlx::query_as!(
         Vendedor,
@@ -39,7 +39,7 @@ pub async fn obtain_sellers(state: web::Data<AppState>, tera: web::Data<Tera>) -
 
 
 #[post("/sellers")]
-pub async fn post_sellers(state: web::Data< AppState>, new_seller: web::Form<Vendedor>)  //manda los datos como un webform, no se como hacerlo en json
+pub async fn insert_sellers(state: web::Data< AppState>, new_seller: web::Form<Vendedor>)  //manda los datos como un webform, no se como hacerlo en json
 -> impl Responder {
 
     let result = sqlx::query!(
@@ -84,5 +84,58 @@ pub async fn delete_sellers(state: web::Data<AppState>, path: web::Path<(i32, )>
         .error_response(),
         
     }
+}
+
+
+#[get("/sellers/sellerDetails/{id_vendedor}")]
+pub async fn get_seller_details(state: web::Data<AppState>, path: web::Path<(i32, )>) -> impl Responder { 
+    let id_vendedor = path.into_inner().0;
+    match sqlx::query_as!(
+        Vendedor,
+        r#"
+         SELECT id_vendedor ,nombre, apellido,cedula
+        FROM vendedor
+        WHERE id_vendedor = $1
+       "#,
+        id_vendedor
+    )   
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(vendedor) => Ok(web::Json(vendedor)),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),  // Convert the error to a string or handle it accordingly
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )),  // Error case
+    }
+}
+
+
+
+#[post("/edit_sellers/")]
+pub async fn edit_sellers(state: web::Data<AppState>, modified_sellers: web::Form<Vendedor>) -> Result<HttpResponse, InternalError<String>> {
+    match sqlx::query!(r#"
+    UPDATE vendedor
+    SET nombre= $1, apellido = $2,
+    cedula = $3
+    WHERE id_vendedor = $4 
+    "#,
+        modified_sellers.nombre,
+        modified_sellers.apellido,
+        modified_sellers.cedula,
+        modified_sellers.id_vendedor,
+        
+    )
+    .execute(&state.db)
+    .await
+    {
+        Ok(_) => Ok(HttpResponse::SeeOther().append_header(("Location", "/sellers")).finish()),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )),
+    }
+
+
 }
 
