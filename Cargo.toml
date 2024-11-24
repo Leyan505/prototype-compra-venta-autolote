@@ -13,3 +13,5 @@ serde = {version = "1.0.210", features =["derive"]}
 sqlx = { version = "0.8.2", features = ["runtime-async-std-native-tls", "postgres", "chrono", "bigdecimal"] }
 bigdecimal = {version = "0.4.6", features = ["serde"] } 
 tera = "1.20.0"
+tokio = { version = "1.41.1", features = ["full"]}
+xlsxwriter = "0.6.1"
