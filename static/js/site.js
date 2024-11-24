@@ -404,7 +404,7 @@ $('#salesModal').modal({
   
     if (opc === "insert-seller") {
       $('#seller-header').html(`<h3>Insertar Vendedor</h3>`);
-      $('#seller-details').html(`<form action="/sellersS" method="POST" enctype="application/x-www-form-urlencoded">
+      $('#seller-details').html(`<form action="/sellers" method="POST" enctype="application/x-www-form-urlencoded">
           <div class="row mb-3">
             <div class="col-6">
               <label for="nombre" class="form-label">Nombre</label>
@@ -422,7 +422,7 @@ $('#salesModal').modal({
             </div>
           </div>
           <div class="flex-btn-modal">
-            <button type="submit" class="btn btn-primary">Insertar</button>
+            <button id="btnInsertarVendedor" type="submit" class="btn btn-primary">Insertar</button>
           </div>
         </form>
       `);
@@ -463,7 +463,7 @@ $('#salesModal').modal({
         { format: 'json', ajax: true })
         .done(function (data) {
           $('#seller-header').html(`<h3>Editar Vendedor</h3>`);
-          $('#seller-details').html(`<form action="/edit_seller" method="POST" enctype="application/x-www-form-urlencoded">
+          $('#seller-details').html(`<form action="/edit_sellers/" method="POST" enctype="application/x-www-form-urlencoded">
               <div class="row mb-3">
                 <div class="col-6">
                   <label for="nombre" class="form-label">Nombre</label>
@@ -481,7 +481,7 @@ $('#salesModal').modal({
                 </div>
               </div>
               <div class="flex-btn-modal">
-                <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                <button id="btnEditarVendedor" type="submit" class="btn btn-warning">Guardar Cambios</button>
               </div>
             </form>
           `);

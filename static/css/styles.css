@@ -279,7 +279,7 @@ div.dt-container .dt-paging .dt-paging-button:hover{
   padding: 5px;
 }
 
-#vehicle-header, #sales-header{
+#vehicle-header, #sales-header, #seller-header{
   font-weight: bold;
 }
 
@@ -295,7 +295,7 @@ div.dt-container .dt-paging .dt-paging-button:hover{
 }
 
 button#btnInsertarVehiculo, button#btnEditarVehiculo, button#btnInsertarVenta, button#btnEditarVenta,
-button#btnInsertarCliente, button#btnEditarCliente{
+button#btnInsertarCliente, button#btnEditarCliente, button#btnEditarVendedor, button#btnInsertarVendedor{
   background-color: rgba(45, 55, 112, 0.7);
   color: white;
   width: 35%;
@@ -305,7 +305,7 @@ button#btnInsertarCliente, button#btnEditarCliente{
   background-color: rgba(71, 79, 122, 1);
 }
 
-#btnInsertarVenta:hover, #btnEditarVenta:hover, #btnEditarCliente:hover{
+#btnInsertarVenta:hover, #btnEditarVenta:hover, #btnEditarCliente:hover, #btnEditarVendedor, #btnInsertarVendedor{
   background-color: rgba(71, 79, 122, 1);
 
 }
@@ -317,7 +317,7 @@ button#btnInsertarCliente, button#btnEditarCliente{
   width: 100%;
 }
 
-div#vehicle-header, div#sales-header, div#clients-header{
+div#vehicle-header, div#sales-header, div#clients-header, div#seller-header{
   background-color: rgba(45, 55, 112, 0.7);
   color: white;
   text-align: center;

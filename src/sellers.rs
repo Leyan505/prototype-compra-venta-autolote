@@ -93,7 +93,7 @@ pub async fn get_seller_details(state: web::Data<AppState>, path: web::Path<(i32
     match sqlx::query_as!(
         Vendedor,
         r#"
-         SELECT id_vendedor ,nombre, apellido,cedula
+        SELECT id_vendedor ,nombre, apellido,cedula
         FROM vendedor
         WHERE id_vendedor = $1
        "#,
