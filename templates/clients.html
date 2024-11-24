@@ -12,11 +12,11 @@
     <table id="clientes-table" class="table">
       <thead>
         <tr>
-          <th scope="col">accion</th> 
-          <th scope="col">id</th>
-          <th scope="col">cedula</th>
-          <th scope="col">nombre</th>
-          <th scope="col">apellido</th>
+          <th scope="col">Acción</th> 
+          <th scope="col">ID</th>
+          <th scope="col">Cédula</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
         </tr>
       </thead>
         <tbody>
@@ -25,7 +25,7 @@
               <td>
                 <div class="btn-group accion-botones" role="group">
                   <button id="edit-client" data-bs-toggle="modal" data-bs-target="#clientsModal" data-id="{{cliente.id_cliente}}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
-                  <form method="POST" action="/delete_clients/{{cliente.id_cliente}}">
+                  <form method="POST" action="/delete_client/{{cliente.id_cliente}}">
                     <button id="delete-clients" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
                   </form>
                 </div>

@@ -339,22 +339,22 @@ $(function (){
       var opc = $(event.relatedTarget).closest('button').attr('id');
     
     if (opc == "insert-clients") {
-      $('#sales-header').html(`<h3>Insertar Cliente</h3>`);
-      $('#sales-details').html(`<form action="/clients" method="POST" enctype="application/x-www-form-urlencoded">
+      $('#clients-header').html(`<h3>Insertar Cliente</h3>`);
+      $('#clients-details').html(`<form action="/clients" method="POST" enctype="application/x-www-form-urlencoded">
         <div class="row mb-3">
           <div class="col-12">
             <label for="cedula" class="form-label">Cédula</label>
-            <input type="text" class="form-control" name="cedula" id="cedula" required>
+            <input type="text" class="form-control" name="cedula" id="cedula" placeholder="ej. 001-112205-7896J" required>
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-6">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" name="nombre" id="nombre" required>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="ej. Andrés" required>
           </div>
           <div class="col-6">
             <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" name="apellido" id="apellido" required>
+            <input type="text" class="form-control" name="apellido" id="apellido" placeholder="ej. Guido" required>
           </div>
         </div>
         <div class="flex-btn-modal">
@@ -366,12 +366,12 @@ $(function (){
         format: 'json',
         ajax: true
       }).done(function (data) {
-        $('#sales-header').html(`<h3>Editar Venta</h3>`);
-        $('#sales-details').html(`<form action="/edit_client/" method="POST" enctype="application/x-www-form-urlencoded">
+        $('#clients-header').html(`<h3>Editar Venta</h3>`);
+        $('#clients-details').html(`<form action="/edit_client/" method="POST" enctype="application/x-www-form-urlencoded">
           <div class="row mb-3">
             <div class="col-12">
               <label for="cedula" class="form-label">Cédula</label>
-              <input type="text" class="form-control" value="${data[0]["cedula"]}" required>
+              <input type="text" class="form-control" name="cedula" value="${data[0]["cedula"]}" required>
               <input type="hidden" class="form-control" name="id_cliente" id="id_cliente" value="${data[0]["id_cliente"]}">
             </div>
           </div>

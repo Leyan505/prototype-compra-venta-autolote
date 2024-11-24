@@ -294,17 +294,18 @@ div.dt-container .dt-paging .dt-paging-button:hover{
 
 }
 
-button#btnInsertarVehiculo, button#btnEditarVehiculo, button#btnInsertarVenta, button#btnEditarVenta{
+button#btnInsertarVehiculo, button#btnEditarVehiculo, button#btnInsertarVenta, button#btnEditarVenta,
+button#btnInsertarCliente, button#btnEditarCliente{
   background-color: rgba(45, 55, 112, 0.7);
   color: white;
   width: 35%;
 }
 
-#btnInsertarVehiculo:hover, #btnEditarVehiculo:hover {
+#btnInsertarVehiculo:hover, #btnEditarVehiculo:hover{
   background-color: rgba(71, 79, 122, 1);
 }
 
-#btnInsertarVenta:hover, #btnEditarVenta:hover{
+#btnInsertarVenta:hover, #btnEditarVenta:hover, #btnEditarCliente:hover{
   background-color: rgba(71, 79, 122, 1);
 
 }
@@ -316,8 +317,55 @@ button#btnInsertarVehiculo, button#btnEditarVehiculo, button#btnInsertarVenta, b
   width: 100%;
 }
 
-div#vehicle-header, div#sales-header{
+div#vehicle-header, div#sales-header, div#clients-header{
   background-color: rgba(45, 55, 112, 0.7);
   color: white;
   text-align: center;
+}
+
+.dashboard{
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 15% auto;
+  gap: 5%;
+  background: var(--primary);
+}
+
+.dashboard .dashboard-card{
+  display: flex;
+  flex-direction: column;
+  gap: 3%;
+  height: 100%;
+}
+
+.total-mensuales-card, .entrada-mensuales-card, .salida-mensuales-card,
+.cantidad-ventas-mensuales-card{
+  background-color: white;
+  padding: 2em;
+
+}
+
+.dashboard-grid{
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 3%;
+  height: 100%;
+}
+
+.Ventas-por-marca, .Ventas-por-mes, .gastos-por-mes, .compras-por-mes{
+  background-color: white;
+  padding: 2em;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  shape-rendering: crispEdges;
 }

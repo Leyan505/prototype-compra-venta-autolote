@@ -72,7 +72,7 @@ async fn main() -> std::io::Result<()> {
             .service(delete_client)
             .service(edit_client)
             .service(insert_client)
-            .service(get_client)             
+            .service(get_client)         
     })
     .bind(("127.0.0.1", 8080))?
     .run()

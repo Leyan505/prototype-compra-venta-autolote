@@ -2,31 +2,43 @@
 {% block titulo %} EL PELON {% endblock %}
 
 {% block main %}
-<div class="dashboard-cards row-cols-2">
-  <div class="total-mensuales-card col">
+<div class="date-range-card">
+</div>
+
+<div class="dashboard">
+
+  <div class="dashboard-card">
+    <div class="total-mensuales-card">
+      <h4>Ganancias totales</h4>
+      <h3>0.0$</h3>
+    </div>
+    <div class="entrada-mensuales-card">
+      <h4>Compras</h4>
+      <h3>0.0$</h3>
+    </div>
+    <div class="salida-mensuales-card">
+      <h4>Ventas</h4>
+      <h3>0.0$</h3>
+    </div>
+    <div class="cantidad-ventas-mensuales-card">
+      <h4>Vehículos vendidos</h4>
+      <h3>0</h3>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="Ventas-por-mes">
+      <svg width="600" height="400"></svg>
+    </div>
+    <div class="Ventas-por-marca">
+    </div>
+    <div class="gastos-por-mes">
+    </div>
+    <div class="compras-por-mes">
+    </div>
     
   </div>
-  <div class="entrada-mensuales-card col">
-
-  </div>
-  <div class="salida-mensuales-card col">
-
-  </div>
-  <div class="cantidad-ventas-mensuales-card col">
-
-  </div>
-</div>
-<div class="dashboard-grid">
-  <div class="Ventas-por-marca">
-  </div>
-  <div class="Ventas-por-mes">
-  </div>
-  <div class="gastos-por-mes">
-  </div>
-  <div class="compras-por-mes">
-  </div>
-  
-
-</div>
+<div>
 {% endblock %}
 
