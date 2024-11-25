@@ -1,69 +1,172 @@
-// Data
-const data = [
-    { date: '2020-01-01', value: 30 },
-    { date: '2020-02-01', value: 80 },
-    { date: '2020-03-01', value: 45 },
-    { date: '2020-04-01', value: 60 },
-    { date: '2020-05-01', value: 90 },
-    { date: '2020-06-01', value: 120 },
-];
+$(function(){
 
-// Set dimensions and margins
-const width = 100;
-const height = 100;
-const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+    fetch("/fetch_sales")
+        .then(response => {
+            if(!response.ok) {
+                throw new Error('Error al obtener ventas' + response.statusText)
+            }
+            return response.json();
+        })
+        .then(data => {
+            var data_sales = data;
+        })
+        .catch(error => {
+            console.error("Hubo un problema:", error);
+        })
+    
+    var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data[data_sales[0]];
 
-// Create the SVG canvas
-const svg = d3.select('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+    //Ventas
+    var ctx = document.getElementById('chart-ventas').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',  // Specifies that we are creating a line chart
+        data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
+            datasets: [{
+                label: 'My First Dataset',  // Name for the dataset
+                data: [65, 59, 80, 81, 56, 55],  // Data points for the line
+                fill: false,  // Set to 'false' to not fill the area under the line
+                borderColor: 'rgb(75, 192, 192)',  // Line color
+                tension: 0.1,  // Line smoothness (0 is straight, higher values make it smoother)
+                borderWidth: 2, // Line thickness
+                pointRadius: 5, // Size of data points
+                pointBackgroundColor: 'rgb(75, 192, 192)', // Data point color
+            }]
+        },
+        options: {
+            responsive: true,  // Make the chart responsive to window resizing
+            animation: {
+                duration: 2000,  // Animation duration in milliseconds (2 seconds)
+                easing: 'easeInOutQuad',  // Easing function for smooth animation
+                // Optionally, you can add events
+                onProgress: function(animation) {
+                    // You can track progress here if needed
+                },
+                onComplete: function() {
+                    console.log('Animation Complete!');
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true  // Set the X-axis to start from zero
+                },
+                y: {
+                    beginAtZero: true  // Set the Y-axis to start from zero
+                }
+            }
+        }
+    });
 
-// Parse date
-const parseDate = d3.timeParse('%Y-%m-%d');
+    //ventas por marca
+    var ctx1 = document.getElementById('chart-marca').getContext('2d');
+    var myBarChart = new Chart(ctx1, {
+        type: 'pie',  // Specifies the type of chart: bar chart
+        data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
+            datasets: [{
+                label: 'My First Dataset',  // Dataset label
+                data: [65, 59, 80, 81, 56, 55],  // Data for each bar
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar color
+                borderColor: 'rgba(75, 192, 192, 1)',  // Border color of bars
+                borderWidth: 1,  // Border width of bars
+            }]
+        },
+        options: {
+            responsive: true,  // Make the chart responsive to resizing
+            animation: {
+                duration: 1500,  // Duration of the animation in milliseconds (1.5 seconds)
+                easing: 'easeInOutQuart',  // Easing function for the animation (smooth in and out)
+                onProgress: function(animation) {
+                    // Optional: You can track progress here if needed
+                },
+                onComplete: function() {
+                    console.log('Animation Complete!');
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true  // Start the X-axis from zero
+                },
+                y: {
+                    beginAtZero: true  // Start the Y-axis from zero
+                }
+            }
+        }
+    });
 
-// Scales
-const x = d3.scaleTime()
-    .domain(d3.extent(data, d => parseDate(d.date)))
-    .range([0, width - margin.left - margin.right]);
+    //gastos
+    var ctx2 = document.getElementById('chart-gastos').getContext('2d');
+    var myBarChart = new Chart(ctx2, {
+        type: 'bar',  // Specifies the type of chart: bar chart
+        data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
+            datasets: [{
+                label: 'My First Dataset',  // Dataset label
+                data: [65, 59, 80, 81, 56, 55],  // Data for each bar
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar color
+                borderColor: 'rgba(75, 192, 192, 1)',  // Border color of bars
+                borderWidth: 1,  // Border width of bars
+            }]
+        },
+        options: {
+            responsive: true,  // Make the chart responsive to resizing
+            animation: {
+                duration: 1500,  // Duration of the animation in milliseconds (1.5 seconds)
+                easing: 'easeInOutQuart',  // Easing function for the animation (smooth in and out)
+                onProgress: function(animation) {
+                    // Optional: You can track progress here if needed
+                },
+                onComplete: function() {
+                    console.log('Animation Complete!');
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true  // Start the X-axis from zero
+                },
+                y: {
+                    beginAtZero: true  // Start the Y-axis from zero
+                }
+            }
+        }
+    });
 
-const y = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.value)])
-    .range([height - margin.top - margin.bottom, 0]);
+    //compras
+    var ctx3 = document.getElementById('chart-compras').getContext('2d');
+    var myBarChart = new Chart(ctx3, {
+        type: 'bar',  // Specifies the type of chart: bar chart
+        data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
+            datasets: [{
+                label: 'My First Dataset',  // Dataset label
+                data: [65, 59, 80, 81, 56, 55],  // Data for each bar
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar color
+                borderColor: 'rgba(75, 192, 192, 1)',  // Border color of bars
+                borderWidth: 1,  // Border width of bars
+            }]
+        },
+        options: {
+            responsive: true,  // Make the chart responsive to resizing
+            animation: {
+                duration: 1500,  // Duration of the animation in milliseconds (1.5 seconds)
+                easing: 'easeInOutQuart',  // Easing function for the animation (smooth in and out)
+                onProgress: function(animation) {
+                    // Optional: You can track progress here if needed
+                },
+                onComplete: function() {
+                    console.log('Animation Complete!');
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true  // Start the X-axis from zero
+                },
+                y: {
+                    beginAtZero: true  // Start the Y-axis from zero
+                }
+            }
+        }
+    });
 
-// Define axes
-const xAxis = d3.axisBottom(x);
-const yAxis = d3.axisLeft(y);
-
-// Append X and Y axes
-svg.append('g')
-    .attr('class', 'x axis')
-    .attr('transform', `translate(0,${height - margin.top - margin.bottom})`)
-    .call(xAxis);
-
-svg.append('g')
-    .attr('class', 'y axis')
-    .call(yAxis);
-
-// Line generator function
-const line = d3.line()
-    .x(d => x(parseDate(d.date)))
-    .y(d => y(d.value));
-
-// Append the line path with transition for animation
-svg.append('path')
-    .data([data])
-    .attr('class', 'line')
-    .attr('d', line)
-    .attr('stroke-dasharray', function() {
-        const length = this.getTotalLength(); // Get the total length of the path
-        return length; // Set the dasharray to the path length to make it appear from start to end
-    })
-    .attr('stroke-dashoffset', function() {
-        return this.getTotalLength(); // Set the dash offset to the length to hide the line initially
-    })
-    .transition() // Start the transition
-    .duration(2000) // Duration of 2 seconds
-    .ease(d3.easeBounceOut) // Easing function for smooth transition
-    .attr('stroke-dashoffset', 0); // Animate the stroke-dashoffset to 0 to reveal the line
+});

@@ -1,6 +1,9 @@
+use std::option;
+
 use crate:: AppState;
 
 use bigdecimal::{BigDecimal, ToPrimitive};
+use chrono::Utc;
 use tera::{Context, Tera};
 
 use actix_web::{ get, post, web, HttpResponse, Responder, Result, error::InternalError};
@@ -16,6 +19,12 @@ pub struct Venta {
     pub precio_venta: BigDecimal,
     pub id_cliente: i32,
     pub id_vendedor: i32
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct VentaChart{
+    pub record_count: Option<i64>,
+    pub month: Option<i32>
 }
 
 #[get("/sales")]
@@ -36,6 +45,30 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
             HttpResponse::Ok().body(tera.render("sales.html", &context).unwrap())
         }
         Err(_) => HttpResponse::NotFound().json("No sales found"),
+    }
+}
+
+#[get("/fetch_sales")]
+pub async fn fetch_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+    let mut context = Context::new();
+    match sqlx::query_as!(VentaChart,
+        r#"
+        SELECT EXTRACT(MONTH from DATE_TRUNC('month', fecha_venta))::int AS month,
+        COUNT(*) AS record_count
+        FROM venta
+        WHERE EXTRACT(YEAR FROM fecha_venta) = EXTRACT(YEAR from CURRENT_DATE)
+        GROUP BY month
+        ORDER BY month;
+       "#
+    )
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(ventas) => Ok(web::Json(ventas)),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),  // Convert the error to a string or handle it accordingly
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )), 
     }
 }
 
