@@ -2,7 +2,7 @@ use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder
 use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
 use dotenv::dotenv;
 use dashboard::{index};
-use sales::{delete_sales, edit_sales, get_sales, get_sales_details, insert_sales};
+use sales::{delete_sales, edit_sales, get_sales, get_sales_details, insert_sales, fetch_sales};
 use sellers::{delete_sellers, edit_sellers, get_seller_details, get_sellers, insert_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use statics::read_static;

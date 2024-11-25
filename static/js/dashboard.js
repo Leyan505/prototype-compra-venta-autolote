@@ -1,14 +1,28 @@
 $(function(){
 
-
     fetch("/fetch_sales")
+        .then(response => {
+            if(!response.ok) {
+                throw new Error('Error al obtener ventas' + response.statusText)
+            }
+            return response.json();
+        })
+        .then(data => {
+            var data_sales = data;
+        })
+        .catch(error => {
+            console.error("Hubo un problema:", error);
+        })
+    
+    var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data[data_sales[0]];
 
     //Ventas
     var ctx = document.getElementById('chart-ventas').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',  // Specifies that we are creating a line chart
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],  // X-axis labels
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
             datasets: [{
                 label: 'My First Dataset',  // Name for the dataset
                 data: [65, 59, 80, 81, 56, 55],  // Data points for the line
@@ -49,7 +63,7 @@ $(function(){
     var myBarChart = new Chart(ctx1, {
         type: 'pie',  // Specifies the type of chart: bar chart
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],  // X-axis labels
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
             datasets: [{
                 label: 'My First Dataset',  // Dataset label
                 data: [65, 59, 80, 81, 56, 55],  // Data for each bar
@@ -86,7 +100,7 @@ $(function(){
     var myBarChart = new Chart(ctx2, {
         type: 'bar',  // Specifies the type of chart: bar chart
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],  // X-axis labels
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
             datasets: [{
                 label: 'My First Dataset',  // Dataset label
                 data: [65, 59, 80, 81, 56, 55],  // Data for each bar
@@ -123,7 +137,7 @@ $(function(){
     var myBarChart = new Chart(ctx3, {
         type: 'bar',  // Specifies the type of chart: bar chart
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],  // X-axis labels
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
             datasets: [{
                 label: 'My First Dataset',  // Dataset label
                 data: [65, 59, 80, 81, 56, 55],  // Data for each bar
