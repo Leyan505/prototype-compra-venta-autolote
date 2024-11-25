@@ -1,8 +1,6 @@
 use crate:: AppState;
-
 use bigdecimal::{BigDecimal, ToPrimitive};
 use tera::{Context, Tera};
-
 use actix_web::{ get, post, web, HttpResponse, Responder, Result, error::InternalError};
 use serde::{Deserialize, Serialize};
 use sqlx;  
