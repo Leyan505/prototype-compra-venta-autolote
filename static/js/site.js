@@ -3,6 +3,7 @@ $(function (){
   let table2 = new DataTable('#vendedores-table');
   let table3 = new DataTable('#ventas-table');
   let table4 = new DataTable('#clientes-table');
+  let table5 = new DataTable('#gastos-table');
 
 
   $(".toggle-sidebar").click(function(){
@@ -490,6 +491,159 @@ $('#salesModal').modal({
         });
     }
   });
+
+
+//Gastos
+
+$('#costModal').modal({
+  keyboard: true,
+  backdrop: "static",
+  show: false,
+}).on('show.bs.modal', function (event) {
+  var getIdFromRow = $(event.relatedTarget).closest('button').attr('data-id');
+  var opc = $(event.relatedTarget).closest('button').attr('id');
+
+  if (opc == "view-costs") {
+    $.get("/costs/details/" + getIdFromRow, {
+      format: 'json',
+      ajax: true
+    }
+  ).done(function (data) {
+      $('#cost-header').html( `Gastos`);
+      $('#cost-details').html(`<div class="table_component" role="region" tabindex="0">
+        <table>
+          <tbody>
+            <tr>
+              <th>Información de Gasto</th>
+              <th>Valores</th>
+            </tr>
+            <tr>
+              <td>ID Gasto</td>
+              <td>${data["id_gasto"]}</td>
+            </tr>
+            <tr>
+              <td>Matrícula</td>
+              <td>${data["matricula"]}</td>
+            </tr>
+            <tr>
+              <td>Tipo de Reparacion</td>
+              <td>${data["tipo_reparacion"]}</td>
+            </tr>
+            <tr>
+              <td>Monto de Gasto</td>
+              <td>${data["monto"]}</td>
+            </tr>
+            <tr>
+              <th>Informacion Del Taller</th>
+              <th>Valores</th>
+            </tr> 
+            <tr>
+              <td>Nombre del Taller</td>
+              <td>${data["nombre_taller"]}</td>
+            </tr>
+            <tr>
+              <td>Direccion del Taller</td>
+              <td>${data["direccion_taller"]}</td>
+            </tr>
+            <tr>
+              <td>Telefono del Taller</td>
+              <td>${data["telefono_taller"]}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`
+    );
+    });
+  } else if (opc == "insert-costs") {
+    $('#cost-header').html(`<h3>Insertar gasto</h3>`);
+    $('#cost-details').html(`<form action="/costs" method="POST" enctype="application/x-www-form-urlencoded">
+      <div class="row mb-3">
+          <div class="col-6">
+              <label for="matricula" class="form-label">Matricula</label>
+              <input type="text" class="form-control" name="matricula" id="matricula" placeholder="M123456" required>
+            </div>
+            <div class="col-6">
+              <label for="tipo_reparacion" class="form-label">Reparacion</label>
+              <input type="text" class="form-control" name="tipo_reparacion" id="tipo_reparacion" placeholder="1G1RC6E42BUXXXXXX" required>
+            </div>
+          </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="monto" class="form-label">Monto</label>
+            <input type="number" class="form-control" name="monto" id="monto" placeholder="ej. Toyota" required>
+          </div>
+          <div class="col-6">
+            <label for="fecha_finalizacion" class="form-label">Fecha de finalizacion</label>
+            <input type="date" class="form-control" name="fecha_finalizacion" id="fecha_finalizacion" placeholder="ej. Yaris" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="nombre_taller" class="form-label">Nombre del taller</label>
+            <input type="text" class="form-control" name="nombre_taller" id="nombre_taller" placeholder="ej. Blanco" required>
+          </div>
+          <div class="col-6">
+            <label for="direccion_taller" class="form-label">Direccion del taller</label>
+            <input type="text" class="form-control" name="direccion_taller" id="direccion_taller" placeholder="ej. 2020" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="telefono_taller" class="form-label">Telefono del taller</label>
+            <input type="number" class="form-control" name="telefono_taller" id="telefono_taller" placeholder="ej 22772432" required>
+          </div>
+        
+
+        </div>
+        <div class="flex-btn-modal">
+          <button id="btnInsertarGasto" class="btn" type="submit">Insertar</button>
+        </div>
+        </form>
+
+    `);
+  } else if (opc == "edit-sales") {
+    $.get("/sales/salesDetails/" + getIdFromRow, {
+      format: 'json',
+      ajax: true
+    }).done(function (data) {
+      $('#sales-header').html(`<h3>Editar Venta</h3>`);
+      $('#sales-details').html(`<form action="/edit_sales/" method="POST" enctype="application/x-www-form-urlencoded">
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input type="hidden" name="id_venta" id="id_venta" value="${data[0]["id_venta"]}">
+            <input type="text" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}" disabled>
+            <input type="hidden" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}">
+          </div>
+          <div class="col-6">
+            <label for="fecha_venta" class="form-label">Fecha de Venta</label>
+            <input type="date" class="form-control" name="fecha_venta" id="fecha_venta" value="${data[0]["fecha_venta"]}" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="precio_venta" class="form-label">Precio de Venta</label>
+            <input type="number" class="form-control" name="precio_venta" id="precio_venta" value="${data[0]["precio_venta"]}" required>
+          </div>
+          <div class="col-6">
+            <label for="id_cliente" class="form-label">ID Cliente</label>
+            <input type="text" class="form-control" name="id_cliente" id="id_cliente" value="${data[0]["id_cliente"]}" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label for="id_vendedor" class="form-label">ID Vendedor</label>
+            <input type="text" class="form-control" name="id_vendedor" id="id_vendedor" value="${data[0]["id_vendedor"]}" required>
+          </div>
+        </div>
+        <div class="flex-btn-modal">
+          <button id="btnEditarVenta" class="btn" type="submit">Editar</button>
+        </div>
+      </form>`);
+    });
+  }
 });
+});
+
 
 
