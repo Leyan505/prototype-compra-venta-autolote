@@ -10,7 +10,7 @@ use tokio::sync::OwnedRwLockMappedWriteGuard;
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct Gasto {
-    pub id_gasto: i32,
+    pub id_gasto: Option<i32>,
     pub matricula: String,
     pub tipo_reparacion: String,
     pub monto: BigDecimal,
