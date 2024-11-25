@@ -1,8 +1,6 @@
-use crate::{vehicles::state, AppState};
-
+use crate::AppState;
 use tera::{Context, Tera};
-
-use actix_web::{error::InternalError, get, http::header::FROM, post, web, App, HttpResponse, Responder, ResponseError};
+use actix_web::{error::InternalError, get, post, web, HttpResponse, Responder, ResponseError};
 use serde::{Deserialize, Serialize};
 use sqlx::{self};
 
