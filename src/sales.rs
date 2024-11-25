@@ -1,14 +1,13 @@
 use std::option;
 
-use crate::AppState;
-
-use bigdecimal::BigDecimal;
+use crate:: AppState;
+use bigdecimal::{BigDecimal, ToPrimitive};
 use chrono::Utc;
 use tera::{Context, Tera};
-
-use actix_web::{delete, dev::Path, get, http::header::FROM, post, web, HttpResponse, Responder, Result, error::InternalError};
+use actix_web::{ get, post, web, HttpResponse, Responder, Result, error::InternalError};
 use serde::{Deserialize, Serialize};
-use sqlx::{self, PgPool};
+use sqlx;  
+use rust_xlsxwriter::{Workbook,Format, XlsxError, Color};
 
 #[derive(Serialize, Deserialize)]
 pub struct Venta {
@@ -97,6 +96,7 @@ pub async fn insert_sales(state: web::Data< AppState>, new_sales: web::Form<Vent
     }
 }
 
+
 #[post("/delete_sales/{id_venta}")]
 pub async fn delete_sales(state: web::Data<AppState>, path: web::Path<(i32, )>) -> impl Responder{
     let id_venta = path.into_inner().0;
@@ -173,3 +173,81 @@ pub async fn edit_sales(state: web::Data<AppState>, modified_sales: web::Form<Ve
 
 }
 
+
+
+// test export to xls
+#[get("/sales/export")]
+pub async fn export_sales(state: web::Data<AppState>) -> impl Responder {
+    let ventas_result = sqlx::query_as!(
+        Venta,
+        r#"
+        SELECT id_venta, matricula, fecha_venta, precio_venta, id_cliente, id_vendedor
+        FROM venta
+        "#
+    )
+    .fetch_all(&state.db)
+    .await;
+
+    match ventas_result {
+        Ok(ventas) => {
+            match export_sales_to_xlsx(ventas, "export/archivo.xlsx").await {
+                Ok(_) => {
+                    match std::fs::read("export/archivo.xlsx") {
+                        Ok(file_bytes) => {
+                            HttpResponse::Ok()
+                                .content_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                                .insert_header(("Content-Disposition", "attachment; filename=sales.xlsx"))
+                                .body(file_bytes)
+                        },
+                        Err(err) => {
+                            eprintln!("Error reading Excel file: {}", err);
+                            HttpResponse::InternalServerError().body("Error reading Excel file")
+                        }
+                    }
+                }
+                Err(err) => {
+                    eprintln!("Error creating Excel file: {}", err);
+                    HttpResponse::InternalServerError().body("Error creating Excel file")
+                }
+            }
+        }
+        Err(err) => {
+            eprintln!("Error fetching sales: {}", err);
+            HttpResponse::InternalServerError().body("Error fetching sales")
+        }
+    }
+}
+
+// genera el archivo excel
+pub async fn export_sales_to_xlsx(sales: Vec<Venta>, file_path: &str) -> Result<(), XlsxError> {
+    let mut workbook = Workbook::new();
+    let worksheet = workbook.add_worksheet();
+    let header_format = Format::new()
+    .set_font_size(12.0)
+    .set_bold()
+    .set_background_color(Color::Green);
+
+ 
+
+    // esrcibe los encabezados
+        worksheet.write_string_with_format(0, 0, "ID Venta", &header_format)?;
+        worksheet.write_string_with_format(0, 1, "Matrícula", &header_format)?;
+        worksheet.write_string_with_format(0, 2, "Fecha Venta", &header_format)?;
+        worksheet.write_string_with_format(0, 3, "Precio Venta", &header_format)?;
+        worksheet.write_string_with_format(0, 4, "ID Cliente", &header_format)?;
+        worksheet.write_string_with_format(0, 5, "ID Vendedor",&header_format)?;
+    
+    //rellena los encabezados con los datos de ventas
+    for (row, venta) in sales.iter().enumerate() {
+        worksheet.write_number((row + 1) as u32, 0, venta.id_venta.unwrap_or(0) as f64)?;
+        worksheet.write_string((row + 1) as u32, 1, &venta.matricula)?;
+        worksheet.write_string((row + 1) as u32, 2, &venta.fecha_venta.to_string())?;
+        worksheet.write_number((row + 1) as u32, 3, venta.precio_venta.to_f64().unwrap_or(0.0))?;
+        worksheet.write_number((row + 1) as u32, 4, venta.id_cliente as f64)?;
+        worksheet.write_number((row + 1) as u32, 5, venta.id_vendedor as f64)?;        
+    }
+
+    workbook.save(file_path)?;
+    Ok(())
+}
+//fin teste
