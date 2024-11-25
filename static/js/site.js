@@ -308,7 +308,7 @@ $('#salesModal').modal({
         <div class="row mb-3">
           <div class="col-6">
             <label for="precio_venta" class="form-label">Precio de Venta</label>
-            <input type="number" class="form-control" name="precio_venta" id="precio_venta" value="${data[0]["precio_venta"]}" required>
+            <input type="numeric" class="form-control" name="precio_venta" id="precio_venta" value="${data[0]["precio_venta"]}" required>
           </div>
           <div class="col-6">
             <label for="id_cliente" class="form-label">ID Cliente</label>

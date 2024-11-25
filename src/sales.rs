@@ -1,4 +1,4 @@
-use std::option;
+use std::{option, string};
 
 use crate:: AppState;
 use bigdecimal::{BigDecimal, ToPrimitive};
@@ -25,6 +25,12 @@ pub struct VentaChart{
     pub month: Option<i32>
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct VentaBrandChart{
+    pub marca: Option<String>,
+    pub cantidad: Option<i64>
+}
+
 #[get("/sales")]
 pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
     let mut context = Context::new();
@@ -48,7 +54,7 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
 
 #[get("/fetch_sales")]
 pub async fn fetch_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
-    let mut context = Context::new();
+
     match sqlx::query_as!(VentaChart,
         r#"
         SELECT EXTRACT(MONTH from DATE_TRUNC('month', fecha_venta))::int AS month,
@@ -57,6 +63,30 @@ pub async fn fetch_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> i
         WHERE EXTRACT(YEAR FROM fecha_venta) = EXTRACT(YEAR from CURRENT_DATE)
         GROUP BY month
         ORDER BY month;
+       "#
+    )
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(ventas) => Ok(web::Json(ventas)),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),  // Convert the error to a string or handle it accordingly
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )), 
+    }
+}
+
+#[get("/fetch_sales_brands")]
+pub async fn fetch_sales_brands(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+
+    match sqlx::query_as!(VentaBrandChart,
+        r#"
+        SELECT vehiculo.marca,
+        COUNT(*) AS cantidad
+        FROM vehiculo
+        join venta on vehiculo.matricula = venta.matricula
+        GROUP BY vehiculo.marca
+        ORDER BY cantidad;
        "#
     )
     .fetch_all(&state.db)

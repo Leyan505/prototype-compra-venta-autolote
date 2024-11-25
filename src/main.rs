@@ -1,8 +1,8 @@
 use actix_web::{web::Data, App, HttpRequest, HttpResponse, HttpServer, Responder};
-use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
+use costs::{delete_costs, fetch_costs, get_cost, insert_costs, fetch_costs_chart};
 use dotenv::dotenv;
-use dashboard::{index};
-use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales};
+use dashboard::{index, fetch_earnings, fetch_buys, fetch_sells, fetch_vehicles_sold};
+use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales, fetch_sales_brands};
 use sellers::{delete_sellers, edit_sellers, get_seller_details, get_sellers, insert_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use statics::read_static;
@@ -16,7 +16,7 @@ mod costs;
 mod vehicles;
 mod clients;
 use clients::{fetch_clients, delete_client, edit_client, insert_client, get_client};
-use vehicles::{delete_vehicles, edit_vehicles, fetch_vehicles, get_vehicle, insert_vehicles};
+use vehicles::{delete_vehicles, edit_vehicles, fetch_vehicles, get_vehicle, insert_vehicles, fetch_vehicles_chart};
 
 pub struct AppState {
     db: Pool<Postgres>,
@@ -58,26 +58,36 @@ async fn main() -> std::io::Result<()> {
             .service(delete_sales)
             .service(edit_sales)
             .service(fetch_sales)
+            .service(fetch_sales_brands)
             .service(export_sales)
-            //end sales
+
+            //vehicles
             .service(insert_vehicles)
             .service(get_vehicle)
             .service(delete_vehicles)
             .service(edit_vehicles)
+            .service(fetch_vehicles_chart)
+
+            //costs
             .service(get_cost)
             .service(fetch_costs)
             .service(delete_costs)
             .service(insert_costs)
+            .service(fetch_costs_chart)
 
             //dashboard
             .service(index)
+            .service(fetch_earnings)
+            .service(fetch_buys)
+            .service(fetch_vehicles_sold)
+            .service(fetch_sells)
 
             //clients
             .service(fetch_clients)
             .service(delete_client)
             .service(edit_client)
             .service(insert_client)
-            .service(get_client)         
+            .service(get_client)     
     })
     .bind(("127.0.0.1", 8080))?
     .run()

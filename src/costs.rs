@@ -6,6 +6,7 @@ use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 use sqlx::{self, types::{chrono, BigDecimal}, FromRow};
 use tera::{Context, Tera};
+use tokio::sync::OwnedRwLockMappedWriteGuard;
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct Gasto {
@@ -17,6 +18,12 @@ pub struct Gasto {
     pub nombre_taller: String,
     pub direccion_taller: Option<String>,
     pub telefono_taller: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct Gasto_chart {
+    pub month: Option<i32>,
+    pub record_count: Option<i64>
 }
 
 impl fmt::Display for Gasto {
@@ -118,5 +125,27 @@ pub async fn get_cost(
             err.to_string(),
             StatusCode::INTERNAL_SERVER_ERROR,
         )),
+    }
+}
+
+#[get("/fetch_costs_chart")]
+pub async fn fetch_costs_chart(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+
+    match sqlx::query_as!(Gasto_chart,
+        r#"SELECT EXTRACT(MONTH from DATE_TRUNC('month', fecha_finalizacion))::int AS month,
+        COUNT(*) AS record_count
+        FROM gasto
+        WHERE EXTRACT(YEAR FROM fecha_finalizacion) = EXTRACT(YEAR from CURRENT_DATE)
+        GROUP BY month
+        ORDER BY month;
+    "#)
+        .fetch_all(&state.db)
+        .await
+    {
+        Ok(gastos) => Ok(web::Json(gastos)),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),  // Convert the error to a string or handle it accordingly
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )), 
     }
 }

@@ -28,6 +28,13 @@ struct Vehiculo {
     precio_compra: BigDecimal,
     estado: state,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct VehiculoChart{
+    pub record_count: Option<i64>,
+    pub month: Option<i32>
+}
+
 impl fmt::Display for Vehiculo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{} {} ({})", self.marca, self.modelo, self.anio)
@@ -50,9 +57,32 @@ pub async fn fetch_vehicles(state: web::Data<AppState>, tera: web::Data<Tera>) -
     }
 }
 
+#[get("/fetch_vehicles_chart")]
+pub async fn fetch_vehicles_chart(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
+
+    match sqlx::query_as!(VehiculoChart,
+        r#"
+        SELECT EXTRACT(MONTH from DATE_TRUNC('month', fecha_compra))::int AS month,
+        COUNT(*) AS record_count
+        FROM vehiculo
+        WHERE EXTRACT(YEAR FROM fecha_compra) = EXTRACT(YEAR from CURRENT_DATE)
+        GROUP BY month
+        ORDER BY month;
+       "#
+    )
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(ventas) => Ok(web::Json(ventas)),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),  // Convert the error to a string or handle it accordingly
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )), 
+    }
+}
+
 #[post("/vehicles")]
 pub async fn insert_vehicles(state: web::Data<AppState>, new_vehicle: web::Form<Vehiculo>) -> impl Responder {
-    let mut context = Context::new();
 
     match sqlx::query_as!(Vehiculo,
     r#"
