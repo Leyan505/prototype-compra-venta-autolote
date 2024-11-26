@@ -70,10 +70,31 @@ CREATE TABLE Promesa_Venta (
     FOREIGN KEY (matricula) REFERENCES Vehiculo (matricula)
 );
 
-CREATE TYPE state AS ENUM('DISPONIBLE', 'ENPROCESO', 'VENDIDO', 'RESERVADO');
+
+CREATE TABLE users (
+id SERIAL PRIMARY KEY,
+username VARCHAR(255) UNIQUE NOT NULL,
+password_hash TEXT NOT NULL
+);
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+
+INSERT INTO users (username, password_hash)
+VALUES ('admin', crypt('rapunzel', gen_salt('bf')));
+SELECT username FROM users WHERE username = 'admin' AND password_hash = crypt('rapunzel', password_hash);
+
+
+CREATE TYPE state AS ENUM('DISPONIBLE', 'ENPROCESO', 'VENDIDO', 'RESERVADO', 'ELIMINADO');
 
 ALTER TABLE vehiculo ADD COLUMN estado state;
 
 
 CREATE TYPE estado AS ENUM('ACTIVO', 'OUT');
+
 ALTER TABLE vendedor ADD COLUMN estado estado;
+ALTER TABLE cliente ADD COLUMN estado estado;
+
+ALTER TABLE vendedor ALTER COLUMN estado SET DEFAULT 'ACTIVO';
+ALTER TABLE cliente ALTER COLUMN estado SET DEFAULT 'ACTIVO';
+

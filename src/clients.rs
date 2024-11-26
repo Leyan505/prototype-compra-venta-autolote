@@ -36,7 +36,8 @@ pub async fn fetch_clients(state: web::Data<AppState>, tera: web::Data<Tera>) ->
 
     match sqlx::query_as!(
         Cliente,
-        r#"SELECT id_cliente, nombre, apellido, cedula FROM cliente"#
+        r#"SELECT id_cliente, nombre, apellido, cedula FROM cliente
+        WHERE estado != 'OUT'"#
     )
     .fetch_all(&state.db)
     .await
@@ -84,7 +85,8 @@ pub async fn delete_client(
     let id = path.into_inner().0;
     let result = sqlx::query!(
         r#"
-        DELETE FROM cliente
+        UPDATE cliente
+        SET estado = 'OUT'
         WHERE id_cliente = $1
     "#,
         id,

@@ -303,7 +303,7 @@ $(function(){
     })
 
 
-    //Ventas en el mes
+    //vehiculos vendidos en el mes
     fetch("/fetch_vehicles_sold")
     .then(response => {
         if(!response.ok) {

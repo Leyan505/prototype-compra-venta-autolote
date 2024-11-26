@@ -14,6 +14,7 @@ pub enum state {
     ENPROCESO,
     VENDIDO,
     RESERVADO,
+    ELIMINADO
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
@@ -40,12 +41,15 @@ impl fmt::Display for Vehiculo {
         write!(f, "{} {} ({})", self.marca, self.modelo, self.anio)
     }
 }
+
 #[get("/vehicles")]
 pub async fn fetch_vehicles(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
     let mut context = Context::new();
 
     match sqlx::query_as!(Vehiculo,
-        r#"SELECT nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado AS "estado!: state" FROM vehiculo"#)
+        r#"SELECT nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado as "estado!: state"
+        FROM vehiculo
+        WHERE estado != 'ELIMINADO'"#)
         .fetch_all(&state.db)
         .await
     {
@@ -116,9 +120,10 @@ pub async fn delete_vehicles(state: web::Data<AppState>, path: web::Path<(String
     let id = path.into_inner().0;
     match sqlx::query!(
     r#"
-        DELETE FROM vehiculo
-        WHERE matricula = $1
-    "#,
+    UPDATE vehiculo
+    SET estado = 'ELIMINADO'
+    WHERE matricula = $1
+    "#, 
         id,
     )
     .execute(&state.db)
