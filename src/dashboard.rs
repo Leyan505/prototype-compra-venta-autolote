@@ -1,6 +1,9 @@
 use crate::AppState;
-use actix_web::{ get, web::{self}, HttpResponse, Responder};
+use actix_web::{ error::InternalError,get, web::{self}, HttpResponse, Responder};
 use tera::{Context, Tera};
+use serde::{Serialize,Deserialize};
+use sqlx::types::BigDecimal;
+
 
 #[derive(Serialize, Deserialize)]
 pub struct ganancias{
