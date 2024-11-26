@@ -343,8 +343,16 @@ div#vehicle-header, div#sales-header, div#clients-header, div#seller-header, div
 .total-mensuales-card, .entrada-mensuales-card, .salida-mensuales-card,
 .cantidad-ventas-mensuales-card{
   background-color: white;
-  padding: 2em;
+  padding: 1em;
   border-radius: 0.5em;
+  height: 180px;
+}
+
+.total-mensuales-card h3, .entrada-mensuales-card h3, .salida-mensuales-card h3,
+.cantidad-ventas-mensuales-card h3
+{
+  text-align: center;
+  margin-top: 40px;
 }
 
 .dashboard-grid{
@@ -353,6 +361,7 @@ div#vehicle-header, div#sales-header, div#clients-header, div#seller-header, div
   grid-template-rows: repeat(2, 1fr);
   gap: 1.5rem;
   height: 100%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .Ventas-por-marca, .Ventas-por-mes, .gastos-por-mes, .compras-por-mes{
@@ -363,6 +372,11 @@ div#vehicle-header, div#sales-header, div#clients-header, div#seller-header, div
   flex-direction: column;
   border-radius: 0.5em;
 }
+
+.Ventas-por-marca h3, .Ventas-por-mes h3, .gastos-por-mes h3, .compras-por-mes h3{
+  font-weight: bolder;
+}
+
 
 
 #chart-ventas-container, #chart-marca-container, #chart-gastos-container,

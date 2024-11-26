@@ -250,10 +250,10 @@ $(function(){
     .then(data => {
         if(data[0]["total_difference"] != null)
         {
-            document.getElementById("ganancias-dashboard").innerHTML = data[0]["total_difference"];
+            document.getElementById("ganancias-dashboard").innerHTML = data[0]["total_difference"] + "C$";
         }
         else{
-            document.getElementById("ganancias-dashboard").innerHTML= "0$";
+            document.getElementById("ganancias-dashboard").innerHTML= "0 C$";
         }
     })
     .catch(error => {
@@ -271,10 +271,10 @@ $(function(){
     .then(data => {
         if(data[0]["total_difference"] != null)
         {
-            document.getElementById("compras-dashboard").innerHTML = data[0]["total"];
+            document.getElementById("compras-dashboard").innerHTML = data[0]["total"] + "C$";
         }
         else{
-            document.getElementById("compras-dashboard").innerHTML= "0$";
+            document.getElementById("compras-dashboard").innerHTML= "0 C$";
         }
     })
     .catch(error => {
@@ -292,10 +292,10 @@ $(function(){
     .then(data => {
         if(data[0]["total_difference"] != null)
         {
-            document.getElementById("ventas-dashboard").innerHTML = data[0]["total"];
+            document.getElementById("ventas-dashboard").innerHTML = data[0]["total"] + "C$";
         }
         else{
-            document.getElementById("ventas-dashboard").innerHTML= "0$";
+            document.getElementById("ventas-dashboard").innerHTML= "0 C$";
         }
     })
     .catch(error => {
@@ -314,10 +314,10 @@ $(function(){
     .then(data => {
         if(data[0]["total_difference"] != null)
         {
-            document.getElementById("vendidos-dashboard").innerHTML = data[0]["total"];
+            document.getElementById("vendidos-dashboard").innerHTML = data[0]["total"] + "C$";
         }
         else{
-            document.getElementById("vendidos-dashboard").innerHTML= "0";
+            document.getElementById("vendidos-dashboard").innerHTML= "0 C$";
         }
     })
     .catch(error => {
