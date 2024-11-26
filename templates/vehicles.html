@@ -6,7 +6,9 @@
 
   <div>
     <button id="insert-vehicles" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa-solid fa-square-plus"></i>Nuevo</button>
-    <button id="export-vehicles"><i class="fa-solid fa-file-export"></i>Exportar</button>
+    <form action="/vehicles/export">
+      <button id="export-vehicles"><i class="fa-solid fa-file-export"></i>Exportar</button>
+    </form>
   </div>
 
   <div class="table-wrapper">

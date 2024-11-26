@@ -271,8 +271,8 @@ pub async fn export_sales_to_xlsx(sales: Vec<Venta>, file_path: &str) -> Result<
         worksheet.write_string((row + 1) as u32, 1, &venta.matricula)?;
         worksheet.write_string((row + 1) as u32, 2, &venta.fecha_venta.to_string())?;
         worksheet.write_number((row + 1) as u32, 3, venta.precio_venta.to_f64().unwrap_or(0.0))?;
-        worksheet.write_number((row + 1) as u32, 4, venta.id_cliente as f64)?;
-        worksheet.write_number((row + 1) as u32, 5, venta.id_vendedor as f64)?;        
+        worksheet.write_number((row + 1) as u32, 4, venta.id_cliente)?;
+        worksheet.write_number((row + 1) as u32, 5, venta.id_vendedor)?;        
     }
 
     workbook.save(file_path)?;

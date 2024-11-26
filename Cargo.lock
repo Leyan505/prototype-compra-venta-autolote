@@ -2210,6 +2210,7 @@ dependencies = [
  "actix-web",
  "bigdecimal",
  "chrono",
+ "derive_more 1.0.0",
  "dotenv",
  "env_logger",
  "rust_xlsxwriter",

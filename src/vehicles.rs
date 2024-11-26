@@ -1,13 +1,17 @@
 use std::string;
+use bigdecimal::{BigDecimal, ToPrimitive};
+use derive_more::derive::Display;
 use std::fmt;
 use crate::AppState;
 use actix_web::{error::InternalError, get, http::{header::FROM, StatusCode}, post, web::{self, Json, Redirect}, HttpResponse, Responder, ResponseError};
 use serde::{de::Error, Deserialize, Serialize};
-use sqlx::{self, error::DatabaseError, types::{chrono, BigDecimal}, FromRow
+use sqlx::{self, error::DatabaseError, types::{chrono}, FromRow
 };
+use rust_xlsxwriter::{Workbook,Format, XlsxError, Color};
+
 use tera::{Context, Tera};
 
-#[derive(Serialize, Deserialize, sqlx::Type, Clone, Copy)]
+#[derive(Serialize, Deserialize, sqlx::Type, Clone, Copy, Display)]
 #[sqlx(type_name = "state")]
 pub enum state {
     DISPONIBLE,
@@ -189,3 +193,87 @@ pub async fn edit_vehicles(state: web::Data<AppState>, modified_vehicle: web::Fo
 
 
 }
+
+// test export to xls
+#[get("/vehicles/export")]
+pub async fn export_vehicles(state: web::Data<AppState>) -> impl Responder {
+    let vehiculos_result = sqlx::query_as!(
+        Vehiculo,
+        r#"
+        SELECT nro_chasis, matricula, modelo, marca, color, anio, fecha_compra, precio_compra, estado as "estado!: state"
+        FROM vehiculo
+        WHERE estado != 'ELIMINADO'"#
+    )
+    .fetch_all(&state.db)
+    .await;
+
+    match vehiculos_result {
+        Ok(vehiculos) => {
+            match export_vehicles_to_xlsx(vehiculos, "export/archivo.xlsx").await {
+                Ok(_) => {
+                    match std::fs::read("export/archivo.xlsx") {
+                        Ok(file_bytes) => {
+                            HttpResponse::Ok()
+                                .content_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                                .insert_header(("Content-Disposition", "attachment; filename=vehicles.xlsx"))
+                                .body(file_bytes)
+                        },
+                        Err(err) => {
+                            eprintln!("Error reading Excel file: {}", err);
+                            HttpResponse::InternalServerError().body("Error reading Excel file")
+                        }
+                    }
+                }
+                Err(err) => {
+                    eprintln!("Error creating Excel file: {}", err);
+                    HttpResponse::InternalServerError().body("Error creating Excel file")
+                }
+            }
+        }
+        Err(err) => {
+            eprintln!("Error fetching vehicles: {}", err);
+            HttpResponse::InternalServerError().body("Error fetching sales")
+        }
+    }
+}
+
+// genera el archivo excel
+pub async fn export_vehicles_to_xlsx(sales: Vec<Vehiculo>, file_path: &str) -> Result<(), XlsxError> {
+    let mut workbook = Workbook::new();
+    let worksheet = workbook.add_worksheet();
+    let header_format = Format::new()
+    .set_font_size(12.0)
+    .set_bold()
+    .set_background_color(Color::Green);
+
+ 
+
+    // esrcibe los encabezados
+        worksheet.write_string_with_format(0, 0, "Nro chasis", &header_format)?;
+        worksheet.write_string_with_format(0, 1, "Matrícula", &header_format)?;
+        worksheet.write_string_with_format(0, 2, "Modelo", &header_format)?;
+        worksheet.write_string_with_format(0, 3, "Marca", &header_format)?;
+        worksheet.write_string_with_format(0, 4, "color", &header_format)?;
+        worksheet.write_string_with_format(0, 5, "anio",&header_format)?;
+        worksheet.write_string_with_format(0, 6, "fecha_compra",&header_format)?;
+        worksheet.write_string_with_format(0, 7, "precio_compra",&header_format)?;
+        worksheet.write_string_with_format(0, 8, "estado",&header_format)?;
+    
+    //rellena los encabezados con los datos de ventas
+    for (row, vehiculo) in sales.iter().enumerate() {
+        worksheet.write_string((row + 1) as u32, 0, &vehiculo.nro_chasis)?;
+        worksheet.write_string((row + 1) as u32, 1, &vehiculo.matricula)?;
+        worksheet.write_string((row + 1) as u32, 2, &vehiculo.modelo)?;
+        worksheet.write_string((row + 1) as u32, 3, &vehiculo.marca)?;
+        worksheet.write_string((row + 1) as u32, 4, &vehiculo.color.clone().unwrap())?;        
+        worksheet.write_number((row + 1) as u32, 5, vehiculo.anio)?;        
+        worksheet.write_string((row + 1) as u32, 6, &vehiculo.fecha_compra.to_string())?;        
+        worksheet.write_number((row + 1) as u32, 7, vehiculo.precio_compra.to_f64().unwrap_or(0.0))?;
+        worksheet.write_string((row + 1) as u32, 8, &vehiculo.estado.to_string())?;        
+
+    }
+
+    workbook.save(file_path)?;
+    Ok(())
+}
+//fin teste
