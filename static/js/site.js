@@ -564,13 +564,13 @@ $('#costModal').modal({
             </div>
             <div class="col-6">
               <label for="tipo_reparacion" class="form-label">Reparacion</label>
-              <input type="text" class="form-control" name="tipo_reparacion" id="tipo_reparacion" placeholder="1G1RC6E42BUXXXXXX" required>
+              <input type="text" class="form-control" name="tipo_reparacion" id="tipo_reparacion" placeholder="Cambio de Aceite" required>
             </div>
           </div>
         <div class="row mb-3">
           <div class="col-6">
             <label for="monto" class="form-label">Monto</label>
-            <input type="number" class="form-control" name="monto" id="monto" placeholder="ej. Toyota" required>
+            <input type="number" class="form-control" name="monto" id="monto" placeholder="ej. 250" required>
           </div>
           <div class="col-6">
             <label for="fecha_finalizacion" class="form-label">Fecha de finalizacion</label>
@@ -580,11 +580,11 @@ $('#costModal').modal({
         <div class="row mb-3">
           <div class="col-6">
             <label for="nombre_taller" class="form-label">Nombre del taller</label>
-            <input type="text" class="form-control" name="nombre_taller" id="nombre_taller" placeholder="ej. Blanco" required>
+            <input type="text" class="form-control" name="nombre_taller" id="nombre_taller" placeholder="ej. Taller La tuerca" required>
           </div>
           <div class="col-6">
             <label for="direccion_taller" class="form-label">Direccion del taller</label>
-            <input type="text" class="form-control" name="direccion_taller" id="direccion_taller" placeholder="ej. 2020" required>
+            <input type="text" class="form-control" name="direccion_taller" id="direccion_taller" placeholder="ej. Casa del Obrero media al lago" required>
           </div>
         </div>
         <div class="row mb-3">
