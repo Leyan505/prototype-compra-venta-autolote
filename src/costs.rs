@@ -128,6 +128,39 @@ pub async fn get_cost(
     }
 }
 
+#[post("/edit_costs/")]
+pub async fn edit_costs(state: web::Data<AppState>, modified_costs: web::Form<Gasto>) -> Result<HttpResponse, InternalError<String>> {
+    match sqlx::query!(r#"
+    UPDATE gasto
+    SET tipo_reparacion = $1,
+        monto = $2, 
+        fecha_finalizacion = $3,
+        nombre_taller = $4, 
+        direccion_taller = $5,
+        telefono_taller = $6
+    WHERE matricula = $7
+    "#,
+        
+        modified_costs.tipo_reparacion,
+        modified_costs.monto,
+        modified_costs.fecha_finalizacion,
+        modified_costs.nombre_taller,
+        modified_costs.direccion_taller,
+        modified_costs.telefono_taller,
+        modified_costs.matricula
+        
+    )
+    .execute(&state.db)
+    .await
+    {
+        Ok(_) => Ok(HttpResponse::SeeOther().append_header(("Location", "/costs")).finish()),
+        Err(err) => Err(InternalError::new(
+            err.to_string(),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
+        )),
+    }
+}
+
 #[get("/fetch_costs_chart")]
 pub async fn fetch_costs_chart(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
 
