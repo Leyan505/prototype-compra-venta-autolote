@@ -3,12 +3,7 @@ use costs::{delete_costs, fetch_costs, get_cost, insert_costs, fetch_costs_chart
 use dotenv::dotenv;
 use dashboard::{index, fetch_earnings, fetch_buys, fetch_sells, fetch_vehicles_sold};
 use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales, fetch_sales_brands};
-use actix_web::{web::Data, App, HttpServer};
 use auth::{login_page, login_user};
-use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
-use dotenv::dotenv;
-use dashboard::index, fetch_earnings, fetch_buys, fetch_sells, fetch_vehicles_sold;
-use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales, fetch_sales_brands};
 use sellers::{delete_sellers, edit_sellers, get_seller_details, get_sellers, insert_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use statics::read_static;
