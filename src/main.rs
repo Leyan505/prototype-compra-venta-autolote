@@ -18,7 +18,7 @@ mod costs;
 mod vehicles;
 mod clients;
 use clients::{fetch_clients, delete_client, edit_client, insert_client, get_client};
-use vehicles::{delete_vehicles, edit_vehicles, fetch_vehicles, get_vehicle, insert_vehicles, fetch_vehicles_chart};
+use vehicles::{delete_vehicles, edit_vehicles, export_vehicles, fetch_vehicles, fetch_vehicles_chart, get_vehicle, insert_vehicles};
 
 pub struct AppState {
     db: Pool<Postgres>,
@@ -73,6 +73,7 @@ async fn main() -> std::io::Result<()> {
             .service(delete_vehicles)
             .service(edit_vehicles)
             .service(fetch_vehicles_chart)
+            .service(export_vehicles)
 
             //costs
             .service(get_cost)
