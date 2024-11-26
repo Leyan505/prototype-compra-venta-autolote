@@ -2,9 +2,12 @@ use std::fmt;
 use crate::AppState;
 use actix_web::{error::InternalError, get, http::StatusCode, post, web::{self, Redirect}, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
-use sqlx::{self, types::{chrono, BigDecimal}, FromRow};
+use bigdecimal::{BigDecimal, ToPrimitive};
+use sqlx::{self, types::{chrono}, FromRow};
 use tera::{Context, Tera};
 use tokio::sync::OwnedRwLockMappedWriteGuard;
+use rust_xlsxwriter::{Workbook,Format, XlsxError, Color};
+
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct Gasto {
@@ -13,7 +16,7 @@ pub struct Gasto {
     pub tipo_reparacion: String,
     pub monto: BigDecimal,
     pub fecha_finalizacion: chrono::NaiveDate,
-    pub nombre_taller: String,
+    pub nombre_taller:Option<String>,
     pub direccion_taller: Option<String>,
     pub telefono_taller: Option<String>,
 }
@@ -179,4 +182,111 @@ pub async fn fetch_costs_chart(state: web::Data<AppState>, tera: web::Data<Tera>
             actix_web::http::StatusCode::INTERNAL_SERVER_ERROR
         )), 
     }
+}
+
+
+
+#[get("/costs/export")]
+pub async fn export_costs(state: web::Data<AppState>) -> impl Responder {
+    let gastos_result = sqlx::query_as!(
+        Gasto,
+        r#"
+        SELECT id_gasto, matricula, tipo_reparacion, fecha_finalizacion, monto, nombre_taller, direccion_taller, telefono_taller
+        FROM gasto
+        "#
+    )
+    .fetch_all(&state.db)
+    .await;
+
+    match gastos_result {
+        Ok(gasto) => {
+            match export_costs_to_xlsx(gasto, "export/archivo.xlsx").await {
+                Ok(_) => {
+                    match std::fs::read("export/archivo.xlsx") {
+                        Ok(file_bytes) => {
+                            HttpResponse::Ok()
+                                .content_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                                .insert_header(("Content-Disposition", "attachment; filename=sales.xlsx"))
+                                .body(file_bytes)
+                        },
+                        Err(err) => {
+                            eprintln!("Error reading Excel file: {}", err);
+                            HttpResponse::InternalServerError().body("Error reading Excel file")
+                        }
+                    }
+                }
+                Err(err) => {
+                    eprintln!("Error creating Excel file: {}", err);
+                    HttpResponse::InternalServerError().body("Error creating Excel file")
+                }
+            }
+        }
+        Err(err) => {
+            eprintln!("Error fetching sales: {}", err);
+            HttpResponse::InternalServerError().body("Error fetching sales")
+        }
+    }
+}
+
+// genera el archivo excel
+pub async fn export_costs_to_xlsx(costs: Vec<Gasto>, file_path: &str) -> Result<(), XlsxError> {
+    let mut workbook = Workbook::new();
+    let worksheet = workbook.add_worksheet();
+    let header_format = Format::new()
+    .set_font_size(12.0)
+    .set_bold()
+    .set_background_color(Color::Green);
+
+ 
+
+    // esrcibe los encabezados
+        worksheet.write_string_with_format(0, 0, "ID Gasto", &header_format)?;
+        worksheet.write_string_with_format(0, 1, "Matrícula", &header_format)?;
+        worksheet.write_string_with_format(0, 2, "Fecha de Finalizacion", &header_format)?;
+        worksheet.write_string_with_format(0, 2, "Tipo de Reparacion", &header_format)?;
+        worksheet.write_string_with_format(0, 3, "Monto", &header_format)?;
+        worksheet.write_string_with_format(0, 4, "Nombre del Taller", &header_format)?;
+        worksheet.write_string_with_format(0, 5, "Direccion del Taller",&header_format)?;
+        worksheet.write_string_with_format(0, 5, "Telefono del Taller",&header_format)?;
+    
+    //rellena los encabezados con los datos de ventas
+    for (row, gasto) in costs.iter().enumerate() {
+        // Escribe ID del gasto
+        worksheet.write_number((row + 1) as u32, 0, gasto.id_gasto.unwrap_or(0) as f64)?;
+    
+        // Escribe matrícula
+        worksheet.write_string((row + 1) as u32, 1, &gasto.matricula)?;
+    
+        // Escribe fecha de finalización como cadena
+        worksheet.write_string((row + 1) as u32, 2, &gasto.fecha_finalizacion.to_string())?;
+    
+        // Escribe monto (manejo de BigDecimal -> f64)
+        let monto = gasto.monto.to_f64().unwrap_or(0.0);
+        worksheet.write_number((row + 1) as u32, 3, monto)?;
+    
+        // Escribe nombre del taller
+        worksheet.write_string(
+            (row + 1) as u32, 
+            4, 
+            gasto.nombre_taller.as_deref().unwrap_or("N/A")
+        )?;
+    
+        // Escribe dirección del taller
+        worksheet.write_string(
+            (row + 1) as u32, 
+            5, 
+            gasto.direccion_taller.as_deref().unwrap_or("N/A")
+        )?;
+    
+        // Escribe teléfono del taller
+        worksheet.write_string(
+            (row + 1) as u32, 
+            6, 
+            gasto.telefono_taller.as_deref().unwrap_or("N/A")
+        )?;
+    }
+    
+
+    workbook.save(file_path)?;
+    Ok(())
 }
