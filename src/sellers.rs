@@ -155,7 +155,7 @@ pub async fn export_sellers(state: web::Data<AppState>) -> impl Responder {
         Ok(vendedor) => {
             match export_seller_to_xlsx(vendedor, "export/seller.xlsx").await {
                 Ok(_) => {
-                    match std::fs::read("export/archivo.xlsx") {
+                    match std::fs::read("export/seller.xlsx") {
                         Ok(file_bytes) => {
                             HttpResponse::Ok()
                                 .content_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

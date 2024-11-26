@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use dashboard::{index, fetch_earnings, fetch_buys, fetch_sells, fetch_vehicles_sold};
 use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales, fetch_sales_brands};
 use auth::{login_page, login_user};
-use sellers::{delete_sellers, edit_sellers, get_seller_details, get_sellers, insert_sellers};
+use sellers::{delete_sellers, edit_sellers, export_sellers, get_seller_details, get_sellers, insert_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use statics::read_static;
 use tera::{Context, Tera};
@@ -57,6 +57,8 @@ async fn main() -> std::io::Result<()> {
             .service(get_seller_details)
             .service(delete_sellers)
             .service(edit_sellers)
+            .service(export_sellers)
+            
             //sales
             .service(get_sales)
             .service(get_sales_details)
