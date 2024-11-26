@@ -3,11 +3,18 @@ use costs::{delete_costs, fetch_costs, get_cost, insert_costs, fetch_costs_chart
 use dotenv::dotenv;
 use dashboard::{index, fetch_earnings, fetch_buys, fetch_sells, fetch_vehicles_sold};
 use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales, fetch_sales_brands};
+use actix_web::{web::Data, App, HttpServer};
+use auth::{login_page, login_user};
+use costs::{delete_costs, fetch_costs, get_cost, insert_costs};
+use dotenv::dotenv;
+use dashboard::index, fetch_earnings, fetch_buys, fetch_sells, fetch_vehicles_sold;
+use sales::{delete_sales, edit_sales, export_sales, get_sales, get_sales_details, insert_sales, fetch_sales, fetch_sales_brands};
 use sellers::{delete_sellers, edit_sellers, get_seller_details, get_sellers, insert_sellers};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use statics::read_static;
 use tera::{Context, Tera};
 
+mod auth;
 mod sellers;
 mod dashboard;
 mod sales;
@@ -42,6 +49,10 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(Data::new(AppState { db: pool.clone() }))
             .app_data(Data::new(tera))
+            //login
+            .service(login_page)
+            .service(login_user)
+            //login
             //.service(create_buy_vehicle)
             .service(read_static) // Static file handler
             .service(fetch_vehicles)
