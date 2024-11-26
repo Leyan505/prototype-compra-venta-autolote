@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autolote</title>
+  <link rel="stylesheet" type="text/css" href="static/css/login.css">
+</head>
+<body>
+  <div class="login_form">
+    <!-- Login form container -->
+    <form action="/login" method="POST" >
+
+
+      <!-- Email input box -->
+      <div class="input_box">
+        <label for="username">User</label>
+        <input id="username" name="username" placeholder="Enter user" required />
+      </div>
+
+      <!-- Password input box -->
+      <div class="input_box">
+        <div class="password_title">
+          <label for="password">Password</label>
+          <!-- <a href="#">Forgot Password?</a> -->
+        </div>
+
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      </div>
+
+       <!-- Login button -->
+      <button type="submit">Log In</button>
+      <!-- <p class="sign_up">Don't have an account? <a href="#">Sign up</a></p> -->
+    </form>
+  </div>
+</body>
+</html>

@@ -2,7 +2,6 @@ use std::{option, string};
 
 use crate:: AppState;
 use bigdecimal::{BigDecimal, ToPrimitive};
-use chrono::Utc;
 use tera::{Context, Tera};
 use actix_web::{ get, post, web, HttpResponse, Responder, Result, error::InternalError};
 use serde::{Deserialize, Serialize};
@@ -53,8 +52,7 @@ pub async fn get_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> imp
 }
 
 #[get("/fetch_sales")]
-pub async fn fetch_sales(state: web::Data<AppState>, tera: web::Data<Tera>) -> impl Responder {
-
+pub async fn fetch_sales(state: web::Data<AppState>) -> impl Responder {
     match sqlx::query_as!(VentaChart,
         r#"
         SELECT EXTRACT(MONTH from DATE_TRUNC('month', fecha_venta))::int AS month,
