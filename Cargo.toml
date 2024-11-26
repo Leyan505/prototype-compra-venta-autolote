@@ -15,3 +15,5 @@ bigdecimal = {version = "0.4.6", features = ["serde"] }
 tera = "1.20.0"
 tokio = { version = "1.41.1", features = ["full"]}
 rust_xlsxwriter = "0.79.4"
+actix-session = "0.10.1"
+
