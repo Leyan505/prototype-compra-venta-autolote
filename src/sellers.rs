@@ -3,6 +3,7 @@ use tera::{Context, Tera};
 use actix_web::{error::InternalError, get, post, web, HttpResponse, Responder, ResponseError};
 use serde::{Deserialize, Serialize};
 use sqlx::{self};
+use rust_xlsxwriter::{Workbook,Format, XlsxError, Color};
 
 #[derive(Serialize, Deserialize)]
 pub struct Vendedor {
@@ -137,3 +138,75 @@ pub async fn edit_sellers(state: web::Data<AppState>, modified_sellers: web::For
 
 }
 
+// test export to xls
+#[get("/sellers/export")]
+pub async fn export_sellers(state: web::Data<AppState>) -> impl Responder {
+    let vendedor_result = sqlx::query_as!(
+        Vendedor,
+        r#"
+        SELECT id_vendedor, nombre, apellido, cedula
+        FROM vendedor
+        "#
+    )
+    .fetch_all(&state.db)
+    .await;
+
+    match vendedor_result {
+        Ok(vendedor) => {
+            match export_seller_to_xlsx(vendedor, "export/seller.xlsx").await {
+                Ok(_) => {
+                    match std::fs::read("export/archivo.xlsx") {
+                        Ok(file_bytes) => {
+                            HttpResponse::Ok()
+                                .content_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                                .insert_header(("Content-Disposition", "attachment; filename=seller.xlsx"))
+                                .body(file_bytes)
+                        },
+                        Err(err) => {
+                            eprintln!("Error reading Excel file: {}", err);
+                            HttpResponse::InternalServerError().body("Error reading Excel file")
+                        }
+                    }
+                }
+                Err(err) => {
+                    eprintln!("Error creating Excel file: {}", err);
+                    HttpResponse::InternalServerError().body("Error creating Excel file")
+                }
+            }
+        }
+        Err(err) => {
+            eprintln!("Error fetching sales: {}", err);
+            HttpResponse::InternalServerError().body("Error fetching sales")
+        }
+    }
+}
+
+// genera el archivo excel
+pub async fn export_seller_to_xlsx(seller: Vec<Vendedor>, file_path: &str) -> Result<(), XlsxError> {
+    let mut workbook = Workbook::new();
+    let worksheet = workbook.add_worksheet();
+    let header_format = Format::new()
+    .set_font_size(12.0)
+    .set_bold()
+    .set_background_color(Color::Green);
+
+ 
+
+    // esrcibe los encabezados
+        worksheet.write_string_with_format(0, 0, "ID Vendedor", &header_format)?;
+        worksheet.write_string_with_format(0, 1, "Nombre", &header_format)?;
+        worksheet.write_string_with_format(0, 2, "Apellido", &header_format)?;
+        worksheet.write_string_with_format(0, 3, "Cedula", &header_format)?;
+    
+    //rellena los encabezados con los datos de ventas
+    for (row, vendedor) in seller.iter().enumerate() {
+        worksheet.write_number((row + 1) as u32, 0, vendedor.id_vendedor.unwrap_or(0) as f64)?;
+        worksheet.write_string((row + 1) as u32, 1, &vendedor.nombre)?;
+        worksheet.write_string((row + 1) as u32, 2, &vendedor.apellido)?;
+        worksheet.write_string((row + 1) as u32, 3, &vendedor.cedula)?;  
+    }
+
+    workbook.save(file_path)?;
+    Ok(())
+}
+//fin teste

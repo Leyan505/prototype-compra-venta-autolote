@@ -218,7 +218,7 @@ pub async fn export_sales(state: web::Data<AppState>) -> impl Responder {
 
     match ventas_result {
         Ok(ventas) => {
-            match export_sales_to_xlsx(ventas, "export/archivo.xlsx").await {
+            match export_sales_to_xlsx(ventas, "export/sales.xlsx").await {
                 Ok(_) => {
                     match std::fs::read("export/archivo.xlsx") {
                         Ok(file_bytes) => {
