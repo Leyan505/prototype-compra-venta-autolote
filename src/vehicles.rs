@@ -238,7 +238,7 @@ pub async fn export_vehicles(state: web::Data<AppState>) -> impl Responder {
 }
 
 // genera el archivo excel
-pub async fn export_vehicles_to_xlsx(sales: Vec<Vehiculo>, file_path: &str) -> Result<(), XlsxError> {
+pub async fn export_vehicles_to_xlsx(vehicles: Vec<Vehiculo>, file_path: &str) -> Result<(), XlsxError> {
     let mut workbook = Workbook::new();
     let worksheet = workbook.add_worksheet();
     let header_format = Format::new()
@@ -260,7 +260,7 @@ pub async fn export_vehicles_to_xlsx(sales: Vec<Vehiculo>, file_path: &str) -> R
         worksheet.write_string_with_format(0, 8, "estado",&header_format)?;
     
     //rellena los encabezados con los datos de ventas
-    for (row, vehiculo) in sales.iter().enumerate() {
+    for (row, vehiculo) in vehicles.iter().enumerate() {
         worksheet.write_string((row + 1) as u32, 0, &vehiculo.nro_chasis)?;
         worksheet.write_string((row + 1) as u32, 1, &vehiculo.matricula)?;
         worksheet.write_string((row + 1) as u32, 2, &vehiculo.modelo)?;

@@ -17,7 +17,7 @@ mod statics;
 mod costs;
 mod vehicles;
 mod clients;
-use clients::{fetch_clients, delete_client, edit_client, insert_client, get_client};
+use clients::{fetch_clients, delete_client, edit_client, insert_client, get_client, export_clients};
 use vehicles::{delete_vehicles, edit_vehicles, export_vehicles, fetch_vehicles, fetch_vehicles_chart, get_vehicle, insert_vehicles};
 
 pub struct AppState {
@@ -97,7 +97,8 @@ async fn main() -> std::io::Result<()> {
             .service(delete_client)
             .service(edit_client)
             .service(insert_client)
-            .service(get_client)     
+            .service(get_client)
+            .service(export_clients)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
