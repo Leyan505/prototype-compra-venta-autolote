@@ -27,7 +27,7 @@ $(function(){
                     datasets: [{
                         label: 'Ventas',  // Name for the dataset
                         data: data_sales,  // Data points for the line
-                        fill: false,  // Set to 'false' to not fill the area under the line
+                        fill: true,  // Set to 'false' to not fill the area under the line
                         borderColor: 'rgba(45, 55, 112, 0.2)',  // Line color
                         tension: 0.1,  // Line smoothness (0 is straight, higher values make it smoother)
                         borderWidth: 2, // Line thickness
@@ -84,7 +84,16 @@ $(function(){
                 datasets: [{
                     label: 'Ventas',  // Dataset label
                     data: cantidad,  // Data for each bar
-                    backgroundColor: 'rgba(45, 55, 112, 0.7)',  // Bar color
+                    backgroundColor: [
+                        'rgba(45, 55, 112, 0.7)',  // First brand color
+                        'rgba(255, 99, 132, 0.7)',  // Second brand color (red)
+                        'rgba(54, 162, 235, 0.7)',  // Third brand color (blue)
+                        'rgba(75, 192, 192, 0.7)',  // Fourth brand color (green)
+                        'rgba(153, 102, 255, 0.7)', // Fifth brand color (purple)
+                        'rgba(255, 159, 64, 0.7)',  // Sixth brand color (orange)
+                        'rgba(255, 205, 86, 0.7)',  // Seventh brand color (yellow)
+                        // Add more colors if you have more brands
+                    ],  // Bar color
                     borderColor: 'rgba(255, 255, 255, 0.7)',  // Border color of bars
                     borderWidth: 1,  // Border width of bars
                 }]
@@ -145,7 +154,20 @@ $(function(){
                 datasets: [{
                     label: 'Gastos',  // Dataset label
                     data: data_costs,  // Data for each bar
-                    backgroundColor: 'rgba(45, 55, 112, 0.7)',  // Bar color
+                    backgroundColor: [  // Define a different color for each bar
+                        'rgba(45, 55, 112, 0.7)',  // Color for January
+                        'rgba(255, 99, 132, 0.7)',  // Color for February
+                        'rgba(54, 162, 235, 0.7)',  // Color for March
+                        'rgba(75, 192, 192, 0.7)',  // Color for April
+                        'rgba(153, 102, 255, 0.7)', // Color for May
+                        'rgba(255, 159, 64, 0.7)',  // Color for June
+                        'rgba(255, 205, 86, 0.7)',  // Color for July
+                        'rgba(0, 204, 204, 0.7)',   // Color for August
+                        'rgba(255, 165, 0, 0.7)',   // Color for September
+                        'rgba(255, 105, 180, 0.7)', // Color for October
+                        'rgba(100, 149, 237, 0.7)', // Color for November
+                        'rgba(34, 193, 195, 0.7)'   // Color for December
+                    ],  // Bar color
                     borderColor: 'rgba(255, 255, 255, 0.7)',  // Border color of bars
                     borderWidth: 1,  // Border width of bars
                 }]
@@ -205,7 +227,20 @@ $(function(){
                 datasets: [{
                     label: 'Compras',  // Dataset label
                     data: data_buys,  // Data for each bar
-                    backgroundColor: 'rgba(45, 55, 112, 0.7)',  // Bar color
+                    backgroundColor:[  // Define a different color for each bar
+                        'rgba(45, 55, 112, 0.7)',  // Color for January
+                        'rgba(255, 99, 132, 0.7)',  // Color for February
+                        'rgba(54, 162, 235, 0.7)',  // Color for March
+                        'rgba(75, 192, 192, 0.7)',  // Color for April
+                        'rgba(153, 102, 255, 0.7)', // Color for May
+                        'rgba(255, 159, 64, 0.7)',  // Color for June
+                        'rgba(255, 205, 86, 0.7)',  // Color for July
+                        'rgba(0, 204, 204, 0.7)',   // Color for August
+                        'rgba(255, 165, 0, 0.7)',   // Color for September
+                        'rgba(255, 105, 180, 0.7)', // Color for October
+                        'rgba(100, 149, 237, 0.7)', // Color for November
+                        'rgba(34, 193, 195, 0.7)'   // Color for December
+                    ],  // Bar color
                     borderColor: 'rgba(255, 255, 255, 0.7)',  // Border color of bars
                     borderWidth: 1,  // Border width of bars
                 }]
