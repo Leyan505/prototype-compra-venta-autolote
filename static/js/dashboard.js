@@ -28,11 +28,11 @@ $(function(){
                         label: 'Ventas',  // Name for the dataset
                         data: data_sales,  // Data points for the line
                         fill: false,  // Set to 'false' to not fill the area under the line
-                        borderColor: 'rgb(75, 192, 192)',  // Line color
+                        borderColor: 'rgba(45, 55, 112, 0.2)',  // Line color
                         tension: 0.1,  // Line smoothness (0 is straight, higher values make it smoother)
                         borderWidth: 2, // Line thickness
                         pointRadius: 5, // Size of data points
-                        pointBackgroundColor: 'rgb(75, 192, 192)', // Data point color
+                        pointBackgroundColor: 'rgba(45, 55, 112, 0.7)', // Data point color
                     }]
                 },
                 options: {
@@ -84,8 +84,8 @@ $(function(){
                 datasets: [{
                     label: 'Ventas',  // Dataset label
                     data: cantidad,  // Data for each bar
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar color
-                    borderColor: 'rgba(75, 192, 192, 1)',  // Border color of bars
+                    backgroundColor: 'rgba(45, 55, 112, 0.7)',  // Bar color
+                    borderColor: 'rgba(255, 255, 255, 0.7)',  // Border color of bars
                     borderWidth: 1,  // Border width of bars
                 }]
             },
@@ -145,8 +145,8 @@ $(function(){
                 datasets: [{
                     label: 'Gastos',  // Dataset label
                     data: data_costs,  // Data for each bar
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar color
-                    borderColor: 'rgba(75, 192, 192, 1)',  // Border color of bars
+                    backgroundColor: 'rgba(45, 55, 112, 0.7)',  // Bar color
+                    borderColor: 'rgba(255, 255, 255, 0.7)',  // Border color of bars
                     borderWidth: 1,  // Border width of bars
                 }]
             },
@@ -203,10 +203,10 @@ $(function(){
             data: {
                 labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  // X-axis labels
                 datasets: [{
-                    label: 'My First Dataset',  // Dataset label
+                    label: 'Compras',  // Dataset label
                     data: data_buys,  // Data for each bar
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar color
-                    borderColor: 'rgba(75, 192, 192, 1)',  // Border color of bars
+                    backgroundColor: 'rgba(45, 55, 112, 0.7)',  // Bar color
+                    borderColor: 'rgba(255, 255, 255, 0.7)',  // Border color of bars
                     borderWidth: 1,  // Border width of bars
                 }]
             },
@@ -269,7 +269,7 @@ $(function(){
         return response.json();
     })
     .then(data => {
-        if(data[0]["total_difference"] != null)
+        if(data[0]["total"] != null)
         {
             document.getElementById("compras-dashboard").innerHTML = data[0]["total"] + "C$";
         }
@@ -290,7 +290,7 @@ $(function(){
         return response.json();
     })
     .then(data => {
-        if(data[0]["total_difference"] != null)
+        if(data[0]["total"] != null)
         {
             document.getElementById("ventas-dashboard").innerHTML = data[0]["total"] + "C$";
         }
@@ -312,12 +312,12 @@ $(function(){
         return response.json();
     })
     .then(data => {
-        if(data[0]["total_difference"] != null)
+        if(data[0]["total"] != null)
         {
-            document.getElementById("vendidos-dashboard").innerHTML = data[0]["total"] + "C$";
+            document.getElementById("vendidos-dashboard").innerHTML = data[0]["total"];
         }
         else{
-            document.getElementById("vendidos-dashboard").innerHTML= "0 C$";
+            document.getElementById("vendidos-dashboard").innerHTML= "0";
         }
     })
     .catch(error => {

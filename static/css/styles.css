@@ -158,6 +158,12 @@ div.user-topbar{
   border-radius: 20px;
 }
 
+.buttons-top-card{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 /*.table-wrapper{
   height: 500px;
   overflow-y: hidden;

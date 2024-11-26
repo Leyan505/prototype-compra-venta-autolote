@@ -39,11 +39,11 @@ pub async fn fetch_earnings(state: web::Data<AppState>, tera: web::Data<Tera>) -
         r#"
         SELECT 
         ( 
-            (SELECT SUM(monto) FROM gasto where EXTRACT(MONTH from fecha_finalizacion) = EXTRACT(MONTH from CURRENT_DATE)) 
-            + 
-            (SELECT SUM(precio_compra) FROM vehiculo where EXTRACT(MONTH from fecha_compra) = EXTRACT(MONTH from CURRENT_DATE)) 
+            (SELECT COALESCE(SUM(precio_venta), 0) AS total FROM venta where EXTRACT(MONTH from fecha_venta) = EXTRACT(MONTH from CURRENT_DATE))
+            -
+            (SELECT COALESCE(SUM(monto), 0) AS total FROM gasto where EXTRACT(MONTH from fecha_finalizacion) = EXTRACT(MONTH from CURRENT_DATE)) 
             - 
-            (SELECT SUM(precio_venta) FROM venta where EXTRACT(MONTH from fecha_venta) = EXTRACT(MONTH from CURRENT_DATE))
+            (SELECT COALESCE(SUM(precio_compra), 0) AS total FROM vehiculo where EXTRACT(MONTH from fecha_compra) = EXTRACT(MONTH from CURRENT_DATE))  
         ) 
         AS total_difference
        "#
