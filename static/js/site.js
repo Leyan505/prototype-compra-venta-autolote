@@ -601,45 +601,51 @@ $('#costModal').modal({
         </form>
 
     `);
-  } else if (opc == "edit-sales") {
-    $.get("/sales/salesDetails/" + getIdFromRow, {
-      format: 'json',
-      ajax: true
-    }).done(function (data) {
-      $('#sales-header').html(`<h3>Editar Venta</h3>`);
-      $('#sales-details').html(`<form action="/edit_sales/" method="POST" enctype="application/x-www-form-urlencoded">
-        <div class="row mb-3">
-          <div class="col-6">
-            <label for="matricula" class="form-label">Matrícula</label>
-            <input type="hidden" name="id_venta" id="id_venta" value="${data[0]["id_venta"]}">
-            <input type="text" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}" disabled>
-            <input type="hidden" class="form-control" name="matricula" id="matricula" value="${data[0]["matricula"]}">
+  } else if (opc == "edit-costs") {
+      $.get("/costs/details/" + getIdFromRow, {
+        format: 'json',
+        ajax: true
+      }).done(function (data) {
+        $('#cost-header').html(`<h3>Editar Gasto</h3>`);
+        $('#cost-details').html(`<form action="/edit_costs/" method="POST" enctype="application/x-www-form-urlencoded">
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="matricula" class="form-label">Matrícula</label>
+              <input type="text" class="form-control" name="matricula" id="matricula" value="${data["matricula"]}" required>
+            </div>
+            <div class="col-6">
+              <label for="fecha_finalizacion" class="form-label">Fecha de Finalización</label>
+              <input type="date" class="form-control" name="fecha_finalizacion" id="fecha_finalizacion" value="${data["fecha_finalizacion"]}" required>
+            </div>
           </div>
-          <div class="col-6">
-            <label for="fecha_venta" class="form-label">Fecha de Venta</label>
-            <input type="date" class="form-control" name="fecha_venta" id="fecha_venta" value="${data[0]["fecha_venta"]}" required>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="monto" class="form-label">Monto</label>
+              <input type="number" class="form-control" name="monto" id="monto" value="${data["monto"]}" required>
+            </div>
+            <div class="col-6">
+              <label for="tipo_reparacion" class="form-label">Tipo de Cambio</label>
+              <input type="text" class="form-control" name="tipo_reparacion" id="tipo_reparacion" value="${data["tipo_reparacion"]}" required>
+            </div>
+            <div class="col-6">
+              <label for="nombre_taller" class="form-label">Nombre del Taller</label>
+              <input type="text" class="form-control" name="nombre_taller" id="nombre_taller" value="${data["nombre_taller"]}" required>
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-6">
-            <label for="precio_venta" class="form-label">Precio de Venta</label>
-            <input type="number" class="form-control" name="precio_venta" id="precio_venta" value="${data[0]["precio_venta"]}" required>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="direccion_taller" class="form-label">Dirección del Taller</label>
+              <input type="text" class="form-control" name="direccion_taller" id="direccion_taller" value="${data["direccion_taller"]}" required>
+            </div>
+            <div class="col-6">
+              <label for="telefono_taller" class="form-label">Teléfono del Taller</label>
+              <input type="text" class="form-control" name="telefono_taller" id="telefono_taller" value="${data["telefono_taller"]}" required>
+            </div>
           </div>
-          <div class="col-6">
-            <label for="id_cliente" class="form-label">ID Cliente</label>
-            <input type="text" class="form-control" name="id_cliente" id="id_cliente" value="${data[0]["id_cliente"]}" required>
+          <div class="flex-btn-modal">
+            <button id="btnEditarGasto" class="btn" type="submit">Editar</button>
           </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-6">
-            <label for="id_vendedor" class="form-label">ID Vendedor</label>
-            <input type="text" class="form-control" name="id_vendedor" id="id_vendedor" value="${data[0]["id_vendedor"]}" required>
-          </div>
-        </div>
-        <div class="flex-btn-modal">
-          <button id="btnEditarVenta" class="btn" type="submit">Editar</button>
-        </div>
-      </form>`);
+        </form>`);
     });
   }
 });
