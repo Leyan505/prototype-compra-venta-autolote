@@ -80,6 +80,7 @@ async fn main() -> std::io::Result<()> {
             .service(delete_costs)
             .service(insert_costs)
             .service(fetch_costs_chart)
+            .service(export_costs)
 
             //dashboard
             .service(index)
