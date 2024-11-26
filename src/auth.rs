@@ -39,7 +39,7 @@ pub async fn login_user(
             .append_header(("Location", "/"))
             .finish()
         },
-        Ok(_) => HttpResponse::Unauthorized().body("Invalid username or password"),
+        Ok(_) => HttpResponse::Found().append_header(("Location","/login")).finish(),
         Err(_) => HttpResponse::InternalServerError().body("Error validating user"),
     }
 }
