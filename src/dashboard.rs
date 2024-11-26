@@ -3,6 +3,9 @@ use actix_web::{ error::InternalError, get, web::{self}, HttpResponse, Responder
 use bigdecimal::BigDecimal;
 use serde::{Deserialize, Serialize};
 use tera::{Context, Tera};
+use serde::{Serialize,Deserialize};
+use sqlx::types::BigDecimal;
+
 
 #[derive(Serialize, Deserialize)]
 pub struct ganancias{
